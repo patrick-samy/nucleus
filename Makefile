@@ -8,12 +8,12 @@ build:
 		$(MAKE) -C $$I $@;	\
 	done
 
-floppy:
-	$(MKDIR) $(TMP_DIR)
-	$(CP) $(BOOT_DIR) $(TMP_DIR);
-	$(CP) $(CORE_DIR)/$(CORE_BIN) $(TMP_DIR)/$(BOOT_DIR);
-	$(GRUB_MKRESCUE) --modules=multiboot --output=$(CORE_IMG) $(TMP_DIR)
-	$(RM) $(TMP_DIR);
+floppy: build
+	$(MKDIR) $(BUILD_DIR)
+	$(CP) $(BOOT_DIR) $(BUILD_DIR);
+	$(CP) $(SRC_DIR)/$(CORE_BIN) $(BUILD_DIR)/$(BOOT_DIR);
+	$(GRUB_MKRESCUE) --modules=multiboot --output=$(CORE_IMG) $(BUILD_DIR)
+	$(RM) $(BUILD_DIR);
 
 boot: all
 	$(QEMU) $(QEMU_OPTIONS) -fda $(CORE_IMG)
@@ -23,7 +23,7 @@ clean:
 	do				\
 		$(MAKE) -C $$I $@;	\
 	done
-	$(RM) $(TMP_DIR)
+	$(RM) $(BUILD_DIR)
 
 distclean: clean
 	$(RM) $(CORE_IMG)

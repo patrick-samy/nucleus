@@ -2,6 +2,7 @@
 MAKE	      	= make
 CXX 	      	= g++
 LD	      	= ld
+AR		= ar csr
 
 GRUB_MKRESCUE 	= grub-mkrescue
 QEMU	      	= qemu
@@ -12,19 +13,28 @@ RM	      	= rm -rf
 FIND	      	= find
 XARGS	      	= xargs
 
-# Flags
-CXX_FLAGS 	= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
-
 # Options
 QEMU_OPTIONS 	= -no-reboot
 
 # Output
 CORE_BIN  	= core.bin
 CORE_IMG  	= core.img
-TMP_DIR	  	= tmp
+BUILD_DIR	= tmp
+
+# Machine 
+ARCH		= ia-32
+PLATFORM	= ibm-pc
 
 # Directories
-CORE_DIR  	= core
 BOOT_DIR  	= boot
+INCLUDE_DIR	= include
+SRC_DIR  	= src
+CORE_DIR	= core
+ARCH_DIR	= architecture/$(ARCH)
+PLATFORM_DIR	= platform/$(PLATFORM)
 
-SUBDIRS		= $(CORE_DIR) core
+SUBDIRS		= $(SRC_DIR)	# Root source directory
+
+# Flags
+CXX_FLAGS 	= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
+

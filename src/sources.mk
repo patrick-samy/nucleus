@@ -1,0 +1,8 @@
+LIB_CORE 	= libcore.a
+LIB_PLATFORM 	= libboot.a
+
+LIBS	 	= $(PLATFORM_DIR)/$(LIB_PLATFORM) $(CORE_DIR)/$(LIB_CORE) 
+
+LD_FLAGS 	= -T $(PLATFORM_DIR)/linker.lds
+
+SUBDIRS  	= $(CORE_DIR) $(PLATFORM_DIR)
