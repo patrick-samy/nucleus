@@ -2,9 +2,17 @@
 
 namespace ibm_pc
 {
+	Console::Console()
+	   : buffer((console_char_t *) 0xb8000)
+	{
+	}
+
 	void Console::print_char(char c)
 	{
-		buffer[x_pos * width + y_pos] = c;
+		int width = 80;
+		int height = 25;
+
+		buffer[x_pos * width + y_pos].ch = c;
 
 		if (++y_pos >= height)
 		{

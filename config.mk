@@ -17,8 +17,8 @@ XARGS	      	= xargs
 QEMU_OPTIONS 	= -no-reboot
 
 # Output
-CORE_BIN  	= core.bin
-CORE_IMG  	= core.img
+BIN		= core.bin
+IMG		= core.img
 BUILD_DIR	= tmp
 
 # Machine 
@@ -36,5 +36,7 @@ PLATFORM_DIR	= platform/$(PLATFORM)
 SUBDIRS		= $(SRC_DIR)	# Root source directory
 
 # Flags
-CXX_FLAGS 	= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
+CFLAGS		= -I$(INCLUDE_DIR)
+CXXFLAGS 	= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
+LDFLAGS		=
 

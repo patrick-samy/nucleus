@@ -2,9 +2,14 @@
 
 #define ever (;;)
 
+namespace ibm_pc
+{
+	Console cout;
+}
+
 void main()
 {
-	core::cout << "Hello world !";	
+	ibm_pc::cout << "Hello world !";	
 
 	for ever;
 }

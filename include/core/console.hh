@@ -3,17 +3,14 @@
 
 namespace core
 {
-	public:
-		const int endl = 1; 
-
 	class Console
 	{	
 		public:
-			void print_string(char* str);
+			void print_string(const char* str);
 
-			void operator<< (char* str);
+			void operator<< (const char* str);
 
-			virtual void print_char(char c) = 0;
+			virtual void print_char(const char c) = 0;
 
 		private:
 	};

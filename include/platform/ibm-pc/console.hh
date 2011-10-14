@@ -14,10 +14,8 @@ namespace ibm_pc
 			char bg:4;
 		} __attribute__((packed)) console_char_t;
 
-		const int width = 80;
-		const int height = 25;
-
 		public:
+			Console();
 			virtual void print_char(char c);
 
 		private:
