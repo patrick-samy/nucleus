@@ -2,14 +2,11 @@
 
 #define ever (;;)
 
-namespace ibm_pc
-{
-	Console cout;
-}
-
 void main()
 {
-	ibm_pc::cout << "Hello world !";	
+  ibm_pc::Console c;
 
-	for ever;
+  c << "[Core] Starting kernel...\n";
+
+  for ever;
 }

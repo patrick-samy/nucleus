@@ -15,13 +15,13 @@ $(patsubst %.S,%.o, $(filter %.S,$(SRC)))
 
 # Produce the binary
 $(BIN): $(OBJS)
-	$(LD) -o $@ $(OBJS) $(LDFLAGS) 
+	$(LD) -o $@ $(OBJS) $(LDFLAGS)
 
 $(IMG): $(BIN)
 	$(MKDIR) $(BUILD_DIR)
 	$(CP) $(BOOT_DIR) $(BUILD_DIR)
-	$(CP) $(SRC_DIR)/$(CORE_BIN) $(BUILD_DIR)/$(BOOT_DIR)
-	$(GRUB_MKRESCUE) --modules=multiboot --output=$(CORE_IMG) $(BUILD_DIR)
+	$(CP) $(BIN) $(BUILD_DIR)/$(BOOT_DIR)
+	$(GRUB_MKRESCUE) --modules=multiboot --output=$(IMG) $(BUILD_DIR)
 	$(RM) $(BUILD_DIR)
 
 # Build object files
@@ -47,6 +47,7 @@ boot: all
 clean:
 	$(FIND) . -name '*.o' -exec rm -rf {} \;
 	$(RM) $(IMG) $(BIN)
+	$(RM) $(BUILD_DIR)
 
 distclean: clean
 
