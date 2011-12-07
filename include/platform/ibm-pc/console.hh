@@ -3,7 +3,7 @@
 
 #include "core/console.hh"
 
-namespace ibm_pc
+namespace ibmpc
 {
 	class Console : public core::Console
 	{

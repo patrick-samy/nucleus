@@ -1,6 +1,6 @@
 #include "platform/ibm-pc/console.hh"
 
-namespace ibm_pc
+namespace ibmpc
 {
 	Console::Console()
           : buffer((console_char_t *) 0xb8000),

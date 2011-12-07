@@ -1,0 +1,2 @@
+SRC += src/main.cc
+

@@ -1,42 +1,54 @@
+# Machine 
+ARCH		:= ia-32
+PLATFORM	:= ibm-pc
+
 # Build tools
-MAKE	      	= make
-CXX 	      	= g++
-LD	      	= ld
-AR		= ar csr
+MAKE	      	:= make
+CXX 	      	:= g++
+LD	      	:= ld
+AR		:= ar csr
 
-GRUB_MKRESCUE 	= grub-mkrescue
-QEMU	      	= qemu
+GRUB_MKRESCUE 	:= grub-mkrescue
+QEMU	      	:= qemu
 
-MKDIR	      	= mkdir
-CP	      	= cp -rf
-RM	      	= rm -rf
-FIND	      	= find
-XARGS	      	= xargs
+MKDIR	      	:= mkdir
+CP	      	:= cp -rf
+RM	      	:= rm -rf
+FIND	      	:= find
+XARGS	      	:= xargs
+SH		:= sh
 
 # Options
-QEMU_OPTIONS 	= -no-reboot
-
-# Output
-BIN		= core.bin
-IMG		= core.img
-BUILD_DIR	= tmp
-
-# Machine 
-ARCH		= ia-32
-PLATFORM	= ibm-pc
+QEMU_OPTIONS 	:= -no-reboot
 
 # Directories
-BOOT_DIR  	= boot
-INCLUDE_DIR	= include
-SRC_DIR  	= src
-CORE_DIR	= core
-ARCH_DIR	= architecture/$(ARCH)
-PLATFORM_DIR	= platform/$(PLATFORM)
+BOOT_DIR  	:= boot
+SCRIPTS_DIR	:= scripts
+LIB_DIR		:= lib
+LIB_INCLUDE_DIR := $(LIB)/include
+INCLUDE_DIR	:= include
+SRC_DIR  	:= src
+CORE_DIR	:= $(SRC_DIR)/core
+ARCH_DIR	:= $(SRC_DIR)/architecture/$(ARCH)
+PLATFORM_DIR	:= $(SRC_DIR)/platform/$(PLATFORM)
 
-SUBDIRS		= $(SRC_DIR)	# Root source directory
+# Modules
+MODULES		:= $(LIB_DIR) $(SRC_DIR) $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
 
 # Flags
-CFLAGS		= -I$(INCLUDE_DIR)
-CXXFLAGS 	= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
-LDFLAGS		=
+CFLAGS		:= -I$(LIB_INCLUDE_DIR) -I$(INCLUDE_DIR)
+CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
+LDFLAGS		:=
+
+# Config
+CONFIG_SCRIPT 	:= $(SCRIPTS_DIR)/config.sh
+CONFIG_HEADER	:= config.hh
+
+# Dependancies
+DEPEND_SCRIPT	:= $(SCRIPTS_DIR)/depend.sh
+
+# Output
+BIN		:= atom.bin
+IMG		:= atom.img
+BUILD_DIR	:= tmp
 

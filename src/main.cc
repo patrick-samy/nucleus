@@ -1,10 +1,11 @@
+#include "config.hh"
 #include "platform/ibm-pc/console.hh"
 
 #define ever (;;)
 
 void main()
 {
-  ibm_pc::Console c;
+  platform::Console c;
 
   c << "[Core] Starting kernel...\n";
 

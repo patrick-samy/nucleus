@@ -1,10 +1,7 @@
 include config.mk
 
-# Modules
-MODULES := src/core src/architecture/$(ARCH) src/platform/$(PLATFORM)
-
 # Initialize sources variable
-SRC := src/main.cc
+SRC :=
 
 # Include modules description
 include $(patsubst %, %/module.mk, $(MODULES))
@@ -18,11 +15,16 @@ $(BIN): $(OBJS)
 	$(LD) -o $@ $(OBJS) $(LDFLAGS)
 
 $(IMG): $(BIN)
+	$(RM) $(BUILD_DIR)
 	$(MKDIR) $(BUILD_DIR)
 	$(CP) $(BOOT_DIR) $(BUILD_DIR)
 	$(CP) $(BIN) $(BUILD_DIR)/$(BOOT_DIR)
 	$(GRUB_MKRESCUE) --modules=multiboot --output=$(IMG) $(BUILD_DIR)
 	$(RM) $(BUILD_DIR)
+
+# Build config header
+$(CONFIG_HEADER):
+	$(SH) $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $(INCLUDE_DIR)/$(CONFIG_HEADER)
 
 # Build object files
 %.o: %.cc
@@ -31,12 +33,15 @@ $(IMG): $(BIN)
 %.o: %.S
 	$(CXX) -c $< -o $@
 
-# Include dependancies files
-include $(OBJ:.o=.d)
-
 # Build dependencies files
 %.d: %.cc
-	sh depend.sh `dirname $*.cc` $(CFLAGS) $*.cc > $@
+	$(SH) $(DEPEND_SCRIPT) `dirname $*.cc` $(CFLAGS) $*.cc > $@
+
+%.d: %.S
+	$(SH) $(DEPEND_SCRIPT) `dirname $*.S` $(CFLAGS) $*.S > $@
+
+# Include dependancies files
+include $(OBJS:.o=.d) 
 
 # Common rules
 all: $(IMG)
@@ -46,8 +51,10 @@ boot: all
 
 clean:
 	$(FIND) . -name '*.o' -exec rm -rf {} \;
+	$(FIND) . -name '*.d' -exec rm -rf {} \;
 	$(RM) $(IMG) $(BIN)
 	$(RM) $(BUILD_DIR)
+	$(RM) $(INCLUDE_DIR)/$(CONFIG_HEADER)
 
 distclean: clean
 
