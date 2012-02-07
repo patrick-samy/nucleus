@@ -16,3 +16,6 @@ k_entry:
 	push %ebx	/* multiboot info */
 	push %eax	/* magic */
 	call main	/* kernel entry point */
+        cli
+        hlt
+

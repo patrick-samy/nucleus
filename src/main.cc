@@ -7,7 +7,7 @@ void main()
 {
   platform::Console c;
 
-  c << "[Core] Starting kernel...\n";
+  c << "[Atom] Starting kernel...\n";
 
-  for ever;
+  //for ever;
 }
