@@ -29,11 +29,11 @@ LIB_INCLUDE_DIR := $(LIB)/include
 INCLUDE_DIR	:= include
 SRC_DIR  	:= src
 CORE_DIR	:= $(SRC_DIR)/core
-ARCH_DIR	:= $(SRC_DIR)/architecture/$(ARCH)
-PLATFORM_DIR	:= $(SRC_DIR)/platform/$(PLATFORM)
+ARCH_DIR	:= $(SRC_DIR)/arch/$(ARCH)
+PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
 
 # Modules
-MODULES		:= $(LIB_DIR) $(SRC_DIR) $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
+MODULES		:= $(SRC_DIR) $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
 
 # Flags
 CFLAGS		:= -I$(LIB_INCLUDE_DIR) -I$(INCLUDE_DIR)

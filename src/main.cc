@@ -1,5 +1,5 @@
 #include "config.hh"
-#include "platform/ibm-pc/console.hh"
+#include "arch/ia-32/ibm-pc/console.hh"
 
 #define ever (;;)
 
