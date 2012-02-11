@@ -1,0 +1,2 @@
+SRC += core/console.cc
+

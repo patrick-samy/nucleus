@@ -1,43 +1,33 @@
-# Machine 
-ARCH		:= ia-32
-PLATFORM	:= ibm-pc
+# Version
+VERSION		:= 0.1
+
+# Default target architecture to i386 
+ARCH	 	?= ia-32
+PLATFORM 	?= ibm-pc
 
 # Build tools
-MAKE	      	:= make
-CXX 	      	:= g++
-LD	      	:= ld
-AR		:= ar csr
-
-GRUB_MKRESCUE 	:= grub-mkrescue
-QEMU	      	:= qemu
-
-MKDIR	      	:= mkdir
-CP	      	:= cp -rf
-RM	      	:= rm -rf
-FIND	      	:= find
-XARGS	      	:= xargs
-SH		:= sh
-
-# Options
-QEMU_OPTIONS 	:= -no-reboot
+AS 		:= $(CROSS_COMPILE)as
+LD 		:= $(CROSS_COMPILE)ld
+CC 		:= $(CROSS_COMPILE)gcc
+CXX 		:= $(CROSS_COMPILE)g++
+CPP 		:= $(CC) -E
+AR 		:= $(CROSS_COMPILE)ar
+NM 		:= $(CROSS_COMPILE)nm
+STRIP 		:= $(CROSS_COMPILE)strip
+OBJCOPY 	:= $(CROSS_COMPILE)objcopy
+OBJDUMP 	:= $(CROSS_COMPILE)objdump
 
 # Directories
-BOOT_DIR  	:= boot
 SCRIPTS_DIR	:= scripts
-LIB_DIR		:= lib
-LIB_INCLUDE_DIR := $(LIB)/include
 INCLUDE_DIR	:= include
-SRC_DIR  	:= src
-CORE_DIR	:= $(SRC_DIR)/core
-ARCH_DIR	:= $(SRC_DIR)/arch/$(ARCH)
+CORE_DIR	:= core
+ARCH_DIR	:= arch/$(ARCH)
 PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
-
-# Modules
-MODULES		:= $(SRC_DIR) $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
+BUILD_DIR	:= build
 
 # Flags
-CFLAGS		:= -I$(LIB_INCLUDE_DIR) -I$(INCLUDE_DIR)
-CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti
+CFLAGS		:= -I$(INCLUDE_DIR) -O2
+CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti -O2
 LDFLAGS		:=
 
 # Config
@@ -47,8 +37,9 @@ CONFIG_HEADER	:= config.hh
 # Dependancies
 DEPEND_SCRIPT	:= $(SCRIPTS_DIR)/depend.sh
 
+# Modules
+MODULES		:= $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
+
 # Output
-BIN		:= atom.bin
-IMG		:= atom.img
-BUILD_DIR	:= tmp
+BUILD_OUTPUT	:= atom.bin
 
