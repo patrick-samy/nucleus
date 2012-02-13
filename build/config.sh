@@ -1,5 +1,3 @@
-#!/bin/sh
-
 ARCH_NAMESPACE=`eval echo $1 | sed 's/-//'`
 PLATFORM_NAMESPACE=`eval echo $2 | sed 's/-//'`
 

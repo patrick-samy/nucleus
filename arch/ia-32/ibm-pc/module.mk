@@ -1,4 +1,11 @@
-LDFLAGS	+= -T arch/ia-32/ibm-pc/linker.lds
+# Sub-directories
 
-SRC	+= arch/ia-32/ibm-pc/console.cc \
-	   arch/ia-32/ibm-pc/loader.S
+# Adding ld script
+LDFLAGS 	+= -T $(D)/linker.lds
+
+# Add local sources
+$(eval $(call add_sources,console.cc))
+
+# Build archive
+$(eval $(call make_archive,platform-$(PLATFORM).a))
+

@@ -9,5 +9,5 @@ void main()
 
   c << "[Atom] Starting kernel...\n";
 
-  //for ever;
+  for ever;
 }

@@ -1,46 +1,53 @@
-include config.mk
+# Version
+VERSION		:= 0.1
 
-# Include modules description
-include $(patsubst %, %/module.mk, $(MODULES))
+# Default target architecture to i386
+ARCH	 	?= ia-32
+PLATFORM 	?= ibm-pc
 
-# Substitution to build OBJS variable
-OBJS := $(patsubst %.cc, %.o, $(filter %.cc, $(SRC))) \
-$(patsubst %.S,%.o, $(filter %.S,$(SRC)))
+# Build tools
+AS 		:= $(CROSS_COMPILE)as
+LD 		:= $(CROSS_COMPILE)ld
+CC 		:= $(CROSS_COMPILE)gcc
+CXX 		:= $(CROSS_COMPILE)g++
+CPP 		:= $(CC) -E
+AR 		:= $(CROSS_COMPILE)ar
+NM 		:= $(CROSS_COMPILE)nm
+STRIP 		:= $(CROSS_COMPILE)strip
+OBJCOPY 	:= $(CROSS_COMPILE)objcopy
+OBJDUMP 	:= $(CROSS_COMPILE)objdump
 
-# Produce the binary
-$(BIN): $(OBJS)
-	$(LD) -o $@ $(OBJS) $(LDFLAGS)
+# Rule helpers
+CCOMP		= $(CC) $(CFLAGS) -o $@ -c $<
+CXXCOMP		= $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
+CDEPS		= $(DEPEND_SCRIPT) `dirname $*.cc` $(CFLAGS) $*.cc > $@
+LLINK		= $(AR) csr $@ $^
+LINK		= $(CC) $(CFLAGS) -o $@ $^
 
-# Build config header
-$(CONFIG_HEADER):
-	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $(INCLUDE_DIR)/$(CONFIG_HEADER)
+# Directories
+CORE_DIR	:= core
+ARCH_DIR	:= arch/$(ARCH)
+PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
+BUILD_DIR	:= build
 
-# Build object files
-%.o: %.cc
-	$(CXX) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
+# Flags
+CFLAGS		:=
+CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti -O2
+LDFLAGS		:=
 
-%.o: %.S
-	$(CXX) -c $< -o $@
+# Config
+CONFIG_SCRIPT 	:= $(BUILD_DIR)/config.sh
+CONFIG_HEADER	:= config.hh
 
-# Build dependencies files
-%.d: %.cc
-	sh $(DEPEND_SCRIPT) `dirname $*.cc` $(CFLAGS) $*.cc > $@
+# Dependancies
+DEPEND_SCRIPT	:= $(BUILD_DIR)/depend.sh
 
-%.d: %.S
-	sh $(DEPEND_SCRIPT) `dirname $*.S` $(CFLAGS) $*.S > $@
+# Modules
+MODULES		:= $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
 
-# Include dependancies files
-include $(OBJS:.o=.d) 
+# Include the macros
+include build/macros.mk
 
-# Common rules
-all: $(BUILD_OUTPUT)
-
-clean:
-	find . -name '*.o' -exec rm -rf {} \;
-	find . -name '*.d' -exec rm -rf {} \;
-	rm -rf $(BUILD_OUTPUT)
-	rm -rf $(BUILD_DIR)
-	rm -rf $(INCLUDE_DIR)/$(CONFIG_HEADER)
-
-distclean: clean
+# Include the top-level rules.mk
+include rules.mk
 
