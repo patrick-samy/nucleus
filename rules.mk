@@ -7,8 +7,9 @@ $(eval $(call add_subdirectory,arch/ia-32))
 
 $(eval $(call add_include,.))
 
-$(eval $(call add_binary,atom.bin,$(CORE_DIR)/core.a \
-				  $(ARCH_DIR)/arch-$(ARCH).a))
+$(eval $(call make_binary,atom.bin,$(PLATFORM_DIR)/platform-$(PLATFORM).a \
+				   $(ARCH_DIR)/arch-$(ARCH).a		  \
+				   $(CORE_DIR)/core.a))
 
 $(CONFIG_HEADER):
 	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $(CORE_DIR)/$@

@@ -22,7 +22,7 @@ CCOMP		= $(CC) $(CFLAGS) -o $@ -c $<
 CXXCOMP		= $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
 CDEPS		= $(DEPEND_SCRIPT) `dirname $*.cc` $(CFLAGS) $*.cc > $@
 LLINK		= $(AR) csr $@ $^
-LINK		= $(CC) $(CFLAGS) -o $@ $^
+LINK		= $(LD) $(LDFLAGS) -o $@ $^
 
 # Directories
 CORE_DIR	:= core

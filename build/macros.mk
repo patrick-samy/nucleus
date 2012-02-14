@@ -14,7 +14,7 @@ SP		:= $$(basename $$(SP))
 endef
 
 define add_include
-CFLAGS 		:= $$(CFLAGS) -I$1
+CFLAGS 		:= $$(CFLAGS) -I$$(D)/$1
 endef
 
 define add_sources
@@ -42,7 +42,7 @@ $$(D)/$1: $$(OBJS_$$(D))
 CLEAN		:= $$(CLEAN) $$(D)/$1
 endef
 
-define add_binary
+define make_binary
 BINARY		:= $1
 SOURCES		:= $2
 BINARIES 	:= $$(BINARIES) $1
