@@ -28,7 +28,7 @@ LINK		= $(LD) $(LDFLAGS) -o $@ $^
 CORE_DIR	:= core
 ARCH_DIR	:= arch/$(ARCH)
 PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
-BUILD_DIR	:= build
+SCRIPTS_DIR	:= scripts
 
 # Flags
 CFLAGS		:=
@@ -36,17 +36,17 @@ CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti -O2
 LDFLAGS		:=
 
 # Config
-CONFIG_SCRIPT 	:= $(BUILD_DIR)/config.sh
+CONFIG_SCRIPT 	:= $(SCRIPTS_DIR)/config.sh
 CONFIG_HEADER	:= config.hh
 
 # Dependancies
-DEPEND_SCRIPT	:= $(BUILD_DIR)/depend.sh
+DEPEND_SCRIPT	:= $(SCRIPTS_DIR)/depend.sh
 
 # Modules
 MODULES		:= $(CORE_DIR) $(ARCH_DIR) $(PLATFORM_DIR)
 
 # Include the macros
-include build/macros.mk
+include mk/macros.mk
 
 # Include the top-level rules.mk
 include rules.mk
