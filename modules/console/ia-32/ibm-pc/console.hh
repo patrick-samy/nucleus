@@ -12,6 +12,8 @@ namespace module
       class Console : public module::Console
       {
         public:
+          virtual module::Console& instance();
+
 	  virtual void print_char(char c);
       };
     }

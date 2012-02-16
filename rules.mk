@@ -4,10 +4,12 @@ all: targets
 # Sub-directories
 $(eval $(call add_subdirectory,core))
 $(eval $(call add_subdirectory,arch/ia-32))
+$(eval $(call add_subdirectory,modules))
 
 $(eval $(call add_include,.))
 
-$(eval $(call make_binary,atom.bin,$(PLATFORM_DIR)/platform-$(PLATFORM).a \
+$(eval $(call make_binary,atom.bin,$(MODULES_DIR)/modules.a		  \
+				   $(PLATFORM_DIR)/platform-$(PLATFORM).a \
 				   $(ARCH_DIR)/arch-$(ARCH).a		  \
 				   $(CORE_DIR)/core.a))
 

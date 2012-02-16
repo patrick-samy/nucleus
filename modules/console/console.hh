@@ -6,19 +6,18 @@ namespace module
   class Console
   {
     public:
-      Console& instance();
+      virtual Console& instance() = 0;
 
       void operator<< (const char* str);
 
-    private:
+    protected:
       Console();
       Console(Console& c);
 
+    private:
       void print_string(const char* str);
 
       virtual void print_char(char c) = 0;
-      
-      static Console& instance_;
   };
 }
 

@@ -28,6 +28,7 @@ LINK		= $(LD) $(LDFLAGS) -o $@ $^
 CORE_DIR	:= core
 ARCH_DIR	:= arch/$(ARCH)
 PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
+MODULES_DIR	:= modules
 SCRIPTS_DIR	:= scripts
 
 # Flags

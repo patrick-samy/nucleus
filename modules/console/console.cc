@@ -12,11 +12,6 @@ namespace module
 
   }
   
-  Console& Console::instance()
-  {
-    return instance_;
-  }
-
   void Console::print_string(const char* str)
   {
     while (*str != '\0')
