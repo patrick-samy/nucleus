@@ -9,12 +9,12 @@ ARCH={ia-32,arm} PLATFORM={ibm-pc,omap,realview-pbx-a9} CROSS_COMPILE=toolchain_
 
 #### Testing ####
 
-  * On IA-32 / IBM-PC *
-```
+  * On IA-32 / IBM-PC
+```sh
 Use grub.*
 ```
 
-  * On ARM / OMAP & Realview PBX-A9 *
+  * On ARM / OMAP & Realview PBX-A9
 ```sh
 objcopy -O binary atom.elf atom.bin
 
