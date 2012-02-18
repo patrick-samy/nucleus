@@ -1,13 +1,13 @@
-### Atom ###
-# C++ kernel #
+## Atom ##
+### C++ kernel ###
 
-# Build instructions #
+#### Build instructions ####
 
 ```sh
 ARCH={ia-32,arm} PLATFORM={ibm-pc,omap,realview-pbx-a9} CROSS_COMPILE=toolchain_prefix make
 ```
 
-# Testing #
+#### Testing ####
 
   * On IA-32 / IBM-PC *
 ```
