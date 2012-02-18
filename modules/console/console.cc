@@ -1,10 +1,27 @@
 #include "console.hh"
 
+extern "C"
+void __cxa_pure_virtual()
+{
+}
+
+extern "C"
+int __cxa_guard_acquire(int *)
+{
+
+}
+
+extern "C"
+void __cxa_guard_release(int *)
+{
+
+}
+
 namespace module
 {
   Console::Console()
   {
-
+    
   }
 
   Console::Console(Console& c)

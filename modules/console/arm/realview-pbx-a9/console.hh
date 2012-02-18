@@ -1,9 +1,9 @@
-#ifndef ARM_OMAP_CONSOLE_HH_
-# define ARM_OMAP_CONSOLE_HH_
+#ifndef ARM_REALVIEW_PBX_A9_CONSOLE_HH_
+# define ARM_REALVIEW_PBX_A9_CONSOLE_HH_
 
 # include "modules/console/arm/console.hh"
 
-namespace omap
+namespace realview_pbx_a9
 {
   class Console : public arm::Console
   {
@@ -15,4 +15,4 @@ namespace omap
   };
 }
 
-#endif /* !ARM_OMAP_CONSOLE_HH_ */
+#endif /* !ARM_REALVIEW_PBX_A9_CONSOLE_HH_ */

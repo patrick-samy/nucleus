@@ -3,18 +3,19 @@ all: targets
 
 # Sub-directories
 $(eval $(call add_subdirectory,core))
-$(eval $(call add_subdirectory,arch/ia-32))
+$(eval $(call add_subdirectory,$(ARCH_DIR)))
 $(eval $(call add_subdirectory,modules))
 
 $(eval $(call add_include,.))
 
-$(eval $(call make_binary,atom.bin,$(MODULES_DIR)/modules.a		  \
-				   $(PLATFORM_DIR)/platform-$(PLATFORM).a \
-				   $(ARCH_DIR)/arch-$(ARCH).a		  \
-				   $(CORE_DIR)/core.a))
+$(eval $(call make_binary,atom.elf,				 \
+			  $(PLATFORM_DIR)/platform-$(PLATFORM).a \
+			  $(ARCH_DIR)/arch-$(ARCH).a		 \
+			  $(CORE_DIR)/core.a			 \
+			  $(MODULES_DIR)/modules.a))
 
-$(CONFIG_HEADER):
-	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $(CORE_DIR)/$@
+$(CORE_DIR)/$(CONFIG_HEADER):
+	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $@
 
 CLEAN		:= $(CLEAN) $(CORE_DIR)/$(CONFIG_HEADER)
 

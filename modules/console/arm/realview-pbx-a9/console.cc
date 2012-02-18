@@ -1,6 +1,6 @@
-#include "modules/console/arm/omap/console.hh"
+#include "modules/console/arm/realview-pbx-a9/console.hh"
 
-namespace omap
+namespace realview_pbx_a9
 {
   Console& Console::instance()
   {
@@ -12,7 +12,7 @@ namespace omap
 
   void Console::print_char(char c)
   {
-    volatile static unsigned int* const buffer = (unsigned int *) 0x48020000;
+    volatile static unsigned int* const buffer = (unsigned int *) 0x10009000;
 
     *buffer = (unsigned int) c;
   }

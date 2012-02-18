@@ -1,18 +1,15 @@
-#include "config.hh"
-#include "modules/console/console.hh"
+#include "core/macros.hh"
+#include module(console)
 
 #define ever (;;)
 
-void __cxa_pure_virtual()
-{
-  for ever;
-}
-
 void main()
 {
-  module::Console& c;
+  platform::Console& c = platform::Console::instance();
 
-  c << "[Atom] Starting kernel...\n";
+  c << platform::Console::CYAN;
+  c << platform::Console::LIGHT;
+  c << "Atom kernel loaded.\n";
 
   for ever;
 }

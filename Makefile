@@ -33,7 +33,8 @@ SCRIPTS_DIR	:= scripts
 
 # Flags
 CFLAGS		:=
-CXXFLAGS 	:= -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti -O2
+CXXFLAGS 	:= -nostdinc -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti \
+		   -std=c++0x -O2
 LDFLAGS		:=
 
 # Config

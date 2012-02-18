@@ -6,8 +6,21 @@ namespace module
   class Console
   {
     public:
-      virtual Console& instance() = 0;
+      typedef enum console_modifiers
+      {
+        BLACK,
+        BLUE,
+        GREEN,
+        CYAN,
+        RED,
+        MAGENTA,
+        YELLOW,
+        WHITE,
+        LIGHT,
+	MODIFIER_NB
+      } console_modifiers_e;
 
+    public:
       void operator<< (const char* str);
 
     protected:
