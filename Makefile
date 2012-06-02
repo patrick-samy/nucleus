@@ -6,13 +6,13 @@ ARCH	 	?= ia-32
 PLATFORM 	?= ibm-pc
 
 # Build tools
-AS 		:= $(CROSS_COMPILE)as
-LD 		:= $(CROSS_COMPILE)ld
-CC 		:= $(CROSS_COMPILE)gcc
+AS 			:= $(CROSS_COMPILE)as
+LD 			:= $(CROSS_COMPILE)ld
+CC 			:= $(CROSS_COMPILE)gcc
 CXX 		:= $(CROSS_COMPILE)g++
 CPP 		:= $(CC) -E
-AR 		:= $(CROSS_COMPILE)ar
-NM 		:= $(CROSS_COMPILE)nm
+AR 			:= $(CROSS_COMPILE)ar
+NM 			:= $(CROSS_COMPILE)nm
 STRIP 		:= $(CROSS_COMPILE)strip
 OBJCOPY 	:= $(CROSS_COMPILE)objcopy
 OBJDUMP 	:= $(CROSS_COMPILE)objdump
@@ -25,16 +25,16 @@ LLINK		= $(AR) csr $@ $^
 LINK		= $(LD) $(LDFLAGS) -o $@ $^
 
 # Directories
-CORE_DIR	:= core
-ARCH_DIR	:= arch/$(ARCH)
+CORE_DIR		:= core
+ARCH_DIR		:= arch/$(ARCH)
 PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
-MODULES_DIR	:= modules
-SCRIPTS_DIR	:= scripts
+MODULES_DIR		:= modules
+SCRIPTS_DIR		:= scripts
 
 # Flags
 CFLAGS		:=
-CXXFLAGS 	:= -nostdinc -nostdlib -ffreestanding -fno-builtin -fno-exceptions -fno-rtti \
-		   -std=c++0x -O2
+CXXFLAGS 	:= -nostdinc -nostdlib -ffreestanding -fno-builtin -fno-exceptions \
+-fno-rtti -std=c++0x -O2
 LDFLAGS		:=
 
 # Config
