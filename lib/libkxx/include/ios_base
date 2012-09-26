@@ -3,113 +3,113 @@
 
 namespace std
 {
-	// Types
-	typedef long int streamsize;
+    // Types
+    typedef long int streamsize;
 
-	// Base class for the standard stream classes
-	class ios_base
-	{
-		// enumerations
-		public:
-			// event type
-			enum event
-			{
-				erase_event,
-				imbue_event,
-				copyfmt_event
-			};
-			// seeking direction flags
-			enum seekdir
-			{
-				beg,
-				cur,
-				end
-			};
+    // Base class for the standard stream classes
+    class ios_base
+    {
+        // enumerations
+        public:
+            // event type
+            enum event
+            {
+                erase_event,
+                imbue_event,
+                copyfmt_event
+            };
+            // seeking direction flags
+            enum seekdir
+            {
+                beg,
+                cur,
+                end
+            };
 
-		// types
-		public:
-			// event callback function type
-			typedef void (*event_callback)(event, ios_base&, int);
-			// stream format flags
-			typedef unsigned int fmtflags;
-			// stream state flags
-			typedef unsigned int iostate;
-			// stream opening mode flags
-			typedef unsigned int openmode;
-			
-			// base class for stream exceptions
-			class failure {};
-			// initialize standard stream objects
-			class Init {};
+        // types
+        public:
+            // event callback function type
+            typedef void (*event_callback)(event, ios_base&, int);
+            // stream format flags
+            typedef unsigned int fmtflags;
+            // stream state flags
+            typedef unsigned int iostate;
+            // stream opening mode flags
+            typedef unsigned int openmode;
+            
+            // base class for stream exceptions
+            class failure {};
+            // initialize standard stream objects
+            class Init {};
 
-		// constants
-		public:
-			// independent 
-			static const fmtflags boolalpha		= 0x0001;
-			static const fmtflags showbase 		= 0x0002;
-			static const fmtflags showpoint 	= 0x0004;
-			static const fmtflags showpos 		= 0x0008;
-			static const fmtflags skipsws 		= 0x0010;
-			static const fmtflags unitbuf 		= 0x0020;
-			static const fmtflags uppercase 	= 0x0040;
-			// numerical base
-			static const fmtflags dec 			= 0x0080;
-			static const fmtflags hex 			= 0x0100;
-			static const fmtflags oct 			= 0x0200;
-			// float format
-			static const fmtflags fixed			= 0x0400;
-			static const fmtflags scientific	= 0x0800;
-			// adjustment
-			static const fmtflags internal 		= 0x1000;
-			static const fmtflags left 			= 0x2000;
-			static const fmtflags right 		= 0x4000;
-			// groups
-			static const fmtflags adjustfield	= left | right | internal;
-			static const fmtflags basefield		= dec | oct | hex;
-			static const fmtflags floatfield	= scientific | fixed;
-	
-			// iostate
-			static const iostate eofbit		= 0x1;
-			static const iostate failbit 	= 0x2;
-			static const iostate badbit		= 0x4;
-			static const iostate goodbit	= 0x8;
-			
-			// openmode
-			static const openmode app		= 0x01;
-			static const openmode ate		= 0x02;
-			static const openmode binary	= 0x04;
-			static const openmode in		= 0x08;
-			static const openmode out		= 0x10;
-			static const openmode trunc		= 0x20;
+        // constants
+        public:
+            // independent 
+            static const fmtflags boolalpha     = 0x0001;
+            static const fmtflags showbase      = 0x0002;
+            static const fmtflags showpoint     = 0x0004;
+            static const fmtflags showpos       = 0x0008;
+            static const fmtflags skipsws       = 0x0010;
+            static const fmtflags unitbuf       = 0x0020;
+            static const fmtflags uppercase     = 0x0040;
+            // numerical base
+            static const fmtflags dec           = 0x0080;
+            static const fmtflags hex           = 0x0100;
+            static const fmtflags oct           = 0x0200;
+            // float format
+            static const fmtflags fixed         = 0x0400;
+            static const fmtflags scientific    = 0x0800;
+            // adjustment
+            static const fmtflags internal      = 0x1000;
+            static const fmtflags left          = 0x2000;
+            static const fmtflags right         = 0x4000;
+            // groups
+            static const fmtflags adjustfield   = left | right | internal;
+            static const fmtflags basefield     = dec | oct | hex;
+            static const fmtflags floatfield    = scientific | fixed;
+    
+            // iostate
+            static const iostate eofbit     = 0x1;
+            static const iostate failbit    = 0x2;
+            static const iostate badbit     = 0x4;
+            static const iostate goodbit    = 0x8;
+            
+            // openmode
+            static const openmode app       = 0x01;
+            static const openmode ate       = 0x02;
+            static const openmode binary    = 0x04;
+            static const openmode in        = 0x08;
+            static const openmode out       = 0x10;
+            static const openmode trunc     = 0x20;
 
-		// methods
-		public:
-			// destructor
-			virtual ~ios_base();
-			// formatting
-			fmtflags flags() const;
-			fmtflags flags(fmtflags flags);
-			fmtflags setf(fmtflags flags);
-			fmtflags setf(fmtflags flags, fmtflags mask);
-			fmtflags unsetf(fmtflags flags);
-			streamsize precision() const;
-			streamsize precision(streamsize prec);
-			fmtflags width() const;
-			fmtflags width(streamsize wide);
-			// others
-			void register_callback(event_callback function, int index);
-			bool sync_with_stdio(bool sync = true);
+        // methods
+        public:
+            // destructor
+            virtual ~ios_base();
+            // formatting
+            fmtflags flags() const;
+            fmtflags flags(fmtflags flags);
+            fmtflags setf(fmtflags flags);
+            fmtflags setf(fmtflags flags, fmtflags mask);
+            fmtflags unsetf(fmtflags flags);
+            streamsize precision() const;
+            streamsize precision(streamsize prec);
+            fmtflags width() const;
+            fmtflags width(streamsize wide);
+            // others
+            void register_callback(event_callback function, int index);
+            bool sync_with_stdio(bool sync = true);
 
-		protected:
-			// constructors
-			ios_base();
+        protected:
+            // constructors
+            ios_base();
 
-		private:
-			// constructors
-			ios_base(const ios_base& rhs);
-			// operators
-			ios_base& operator=(const ios_base& rhs);
-	};
+        private:
+            // constructors
+            ios_base(const ios_base& rhs);
+            // operators
+            ios_base& operator=(const ios_base& rhs);
+    };
 }
 
 #endif /* !LIBKXX_IOS_BASE_ */
