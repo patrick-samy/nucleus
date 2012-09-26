@@ -12,7 +12,8 @@ ARCH={ia-32,arm} PLATFORM={ibm-pc,omap,realview-pbx-a9} CROSS_COMPILE=toolchain_
   * On IA-32 / IBM-PC
 
 ```sh
-# Use grub
+# Use grub or try it with Qemu
+$ qemu -kernel atom.elf
 ```
 
   * On ARM / OMAP & Realview PBX-A9
