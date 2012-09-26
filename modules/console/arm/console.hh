@@ -3,7 +3,7 @@
 
 # include "modules/console/console.hh"
 
-namespace arm
+namespace arch
 {
   class Console : public module::Console
   {

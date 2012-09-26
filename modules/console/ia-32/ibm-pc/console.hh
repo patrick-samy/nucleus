@@ -3,7 +3,7 @@
 
 # include "modules/console/console.hh"
 
-namespace ibm_pc
+namespace platform 
 {
   class Console : public module::Console
   {

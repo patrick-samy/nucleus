@@ -1,6 +1,6 @@
 #include "modules/console/arm/console.hh"
 
-namespace ia_32 
+namespace arch 
 {
 }
 

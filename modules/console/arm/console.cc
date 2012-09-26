@@ -1,6 +1,6 @@
 #include "modules/console/arm/console.hh"
 
-namespace arm 
+namespace arch 
 {
   void Console::operator<<(const char* str)
   {

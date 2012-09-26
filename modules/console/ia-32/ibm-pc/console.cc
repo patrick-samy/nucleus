@@ -1,6 +1,6 @@
 #include "modules/console/ia-32/ibm-pc/console.hh"
 
-namespace ibm_pc
+namespace platform 
 {
   static const int modifiers[Console::MODIFIER_NB] =
   {

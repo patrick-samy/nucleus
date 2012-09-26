@@ -3,7 +3,7 @@
 
 # include "modules/console/arm/console.hh"
 
-namespace omap
+namespace platform 
 {
   class Console : public arm::Console
   {

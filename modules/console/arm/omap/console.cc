@@ -1,6 +1,6 @@
 #include "modules/console/arm/omap/console.hh"
 
-namespace omap
+namespace platform 
 {
   Console& Console::instance()
   {

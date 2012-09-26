@@ -13,12 +13,6 @@ echo
 echo "#define __arch__ $ARCH"
 echo "#define __platform__ $PLATFORM"
 
-echo "namespace $ARCH_NAMESPACE { }"
-echo "namespace $PLATFORM_NAMESPACE { }"
-
-echo "namespace arch = $ARCH_NAMESPACE;"
-echo "namespace platform = $PLATFORM_NAMESPACE;"
-
 echo
 echo "#endif /* !CONFIG_HH_ */"
 

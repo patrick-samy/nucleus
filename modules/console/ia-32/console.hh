@@ -3,7 +3,7 @@
 
 # include "modules/console/console.hh"
 
-namespace ia_32
+namespace arch 
 {
   class Console : public module::Console
   {

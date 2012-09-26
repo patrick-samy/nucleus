@@ -1,6 +1,3 @@
-# Add subdirectories
-#$(eval $(call add_subdirectory,src))
-
 # Add local sources
 $(eval $(call add_sources,core.cc))
 
