@@ -1,5 +1,5 @@
-#ifndef LIBK_STDINT_H_
-# define LIBK_STDINT_H_
+#ifndef STDINT_H_
+# define STDINT_H_
 
 /* Integral types. */
 
@@ -40,4 +40,4 @@ typedef unsigned int			uintptr_t;
 # define UINT32_MAX	(4294967295UL)
 # define UINT64_MAX	(18446744073709551615ULL)
 
-#endif /* !LIBK_STDINT_H_ */
+#endif /* !STDINT_H_ */

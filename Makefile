@@ -4,15 +4,16 @@ VERSION			:= 0.1
 # Default target architecture to i386
 ARCH	 		?= ia-32
 PLATFORM 		?= ibm-pc
+CROSS_COMPILE           ?=
 
 # Build tools
-AS				:= $(CROSS_COMPILE)as
-LD 				:= $(CROSS_COMPILE)ld
-CC 				:= $(CROSS_COMPILE)gcc
-CXX				:= $(CROSS_COMPILE)g++
-CPP				:= $(CROSS_COMPILE)gcc -E
-AR 				:= $(CROSS_COMPILE)ar
-NM 				:= $(CROSS_COMPILE)nm
+AS			:= $(CROSS_COMPILE)as
+LD 			:= $(CROSS_COMPILE)ld
+CC 			:= $(CROSS_COMPILE)gcc
+CXX			:= $(CROSS_COMPILE)g++
+CPP			:= $(CROSS_COMPILE)gcc -E
+AR 			:= $(CROSS_COMPILE)ar
+NM 			:= $(CROSS_COMPILE)nm
 STRIP			:= $(CROSS_COMPILE)strip
 OBJCOPY			:= $(CROSS_COMPILE)objcopy
 OBJDUMP			:= $(CROSS_COMPILE)objdump
@@ -20,16 +21,19 @@ OBJDUMP			:= $(CROSS_COMPILE)objdump
 # Rule helpers
 CCOMP			= $(CC) $(CFLAGS) -o $@ -c $<
 CXXCOMP			= $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
-CDEPS			= $(DEPEND_SCRIPT) `dirname $*.cc` $(CFLAGS) $*.cc > $@
+CDEPS			= $(CC) -MM -MG  $(CFLAGS) -o $@ -c $<
 LLINK			= $(AR) csr $@ $^
 LINK			= $(LD) $(LDFLAGS) -o $@ $^
+
+# Deactivate default rules
+MAKEFLAGS               := -rR --warn-undefined-variables
 
 # Directories
 LIBK_DIR		:= lib/libk
 LIBKXX_DIR		:= lib/libkxx
 CORE_DIR		:= core
 ARCH_DIR		:= arch/$(ARCH)
-PLATFORM_DIR	:= $(ARCH_DIR)/$(PLATFORM)
+PLATFORM_DIR	        := $(ARCH_DIR)/$(PLATFORM)
 MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
 
@@ -40,11 +44,11 @@ CXXFLAGS 		:= -nostdinc -nostdlib -ffreestanding -fno-builtin \
 LDFLAGS			:=
 
 # Config
-CONFIG_SCRIPT 	:= $(SCRIPTS_DIR)/config.sh
-CONFIG_HEADER	:= config.hh
+CONFIG_SCRIPT           := $(SCRIPTS_DIR)/config.sh
+CONFIG_HEADER	        := config.hh
 
 # Dependancies
-DEPEND_SCRIPT	:= $(SCRIPTS_DIR)/depend.sh
+DEPEND_SCRIPT	        := $(SCRIPTS_DIR)/depend.sh
 
 # Include the macros
 include mk/macros.mk

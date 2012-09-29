@@ -1,5 +1,5 @@
 # Initialize some variables
-D		:= .
+D := .
 
 # Define macros
 define add_subdirectory

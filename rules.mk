@@ -10,12 +10,12 @@ $(eval $(call add_subdirectory,$(ARCH_DIR)))
 
 $(eval $(call add_include,.))
 
-$(eval $(call make_binary,atom.elf,				 		\
-			  $(LIBK_DIR)/libk.a						\
-			  $(LIBKXX_DIR)/libkxx.a					\
-			  $(PLATFORM_DIR)/platform-$(PLATFORM).a	\
-			  $(ARCH_DIR)/arch-$(ARCH).a		 		\
-			  $(CORE_DIR)/core.a			 			\
+$(eval $(call make_binary,atom.elf,				    \
+			  $(LIBK_DIR)/libk.a			    \
+			  $(LIBKXX_DIR)/libkxx.a		    \
+			  $(PLATFORM_DIR)/platform-$(PLATFORM).a    \
+			  $(ARCH_DIR)/arch-$(ARCH).a		    \
+			  $(CORE_DIR)/core.a			    \
 			  $(MODULES_DIR)/modules.a))
 
 $(CORE_DIR)/$(CONFIG_HEADER):
@@ -23,19 +23,21 @@ $(CORE_DIR)/$(CONFIG_HEADER):
 
 # Actual generic rules
 %.o: %.c
+	$(CDEPS)
 	$(CCOMP)
 
 %.o: %.cc
+	$(CDEPS)
 	$(CXXCOMP)
 
 %.o: %.S
 	$(CCOMP)
 
-%.d: %.c
-	$(CDEPS)
+#%.d: %.c
+#	$(CDEPS)
 
-%.d: %.cc
-	$(CDEPS)
+#%.d: %.cc
+#	$(CDEPS)
 
 %: %.o
 	$(LINK)

@@ -1,5 +1,5 @@
-#ifndef LIBKXX_IOS_BASE_
-# define LIBKXX_IOS_BASE_
+#ifndef STD_IOS_BASE_
+# define STD_IOS_BASE_
 
 namespace std
 {
@@ -28,8 +28,6 @@ namespace std
 
         // types
         public:
-            // event callback function type
-            typedef void (*event_callback)(event, ios_base&, int);
             // stream format flags
             typedef unsigned int fmtflags;
             // stream state flags
@@ -38,9 +36,9 @@ namespace std
             typedef unsigned int openmode;
             
             // base class for stream exceptions
-            class failure {};
+            class failure;
             // initialize standard stream objects
-            class Init {};
+            class Init;
 
         // constants
         public:
@@ -49,7 +47,7 @@ namespace std
             static const fmtflags showbase      = 0x0002;
             static const fmtflags showpoint     = 0x0004;
             static const fmtflags showpos       = 0x0008;
-            static const fmtflags skipsws       = 0x0010;
+            static const fmtflags skipws        = 0x0010;
             static const fmtflags unitbuf       = 0x0020;
             static const fmtflags uppercase     = 0x0040;
             // numerical base
@@ -91,25 +89,34 @@ namespace std
             fmtflags flags(fmtflags flags);
             fmtflags setf(fmtflags flags);
             fmtflags setf(fmtflags flags, fmtflags mask);
-            fmtflags unsetf(fmtflags flags);
+            void unsetf(fmtflags flags);
             streamsize precision() const;
             streamsize precision(streamsize prec);
-            fmtflags width() const;
-            fmtflags width(streamsize wide);
-            // others
-            void register_callback(event_callback function, int index);
-            bool sync_with_stdio(bool sync = true);
+            streamsize width() const;
+            streamsize width(streamsize wide);
 
         protected:
             // constructors
             ios_base();
+            // initialization
+            void init(void* buffer);
 
         private:
             // constructors
             ios_base(const ios_base& rhs);
             // operators
             ios_base& operator=(const ios_base& rhs);
+
+        // attributes
+        private:
+            fmtflags    format_flags_;
+            streamsize  precision_;
+            streamsize  width_;
+            iostate     state_;
+            void*       buffer_;
     };
 }
 
-#endif /* !LIBKXX_IOS_BASE_ */
+# include <ios_base.hxx>
+
+#endif /* !STD_IOS_BASE_ */

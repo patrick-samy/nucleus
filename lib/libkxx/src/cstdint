@@ -1,0 +1,6 @@
+#ifndef STD_CSTDINT_
+# define STD_CSTDINT_
+
+# include <stdint.h>
+
+#endif /* !STD_CSTDINT_ */

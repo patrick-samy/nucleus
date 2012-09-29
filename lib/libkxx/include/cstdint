@@ -1,6 +1,0 @@
-#ifndef LIBKXX_CSTDINT_
-#define LIBKXX_CSTDINT_
-
-# include <stdint.h>
-
-#endif /* !LIBKXX_CSTDINT_ */
