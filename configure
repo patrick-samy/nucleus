@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+    ARCH="ia-32"
+    PLATFORM="ibm-pc"
+    CROSS_COMPILE=""
+elif [ $# -ge 3 ]; then
+    ARCH=$1
+    PLATFORM=$2
+    CROSS_COMPILE=$3
+else
+    echo "Usage: ./configure {ia-32,arm} {ibm-pc,omap,realview-pbx-a9} toolchain_prefix"
+fi
+
+cat <<EOF > build.conf 
+# Version
+VERSION			:= 0.1
+
+# Default target architecture to i386
+ARCH	 		:= $ARCH
+PLATFORM 		:= $PLATFORM
+CROSS_COMPILE           := $CROSS_COMPILE
+EOF
+
+sh scripts/config.sh $ARCH $PLATFORM > core/config.hh
+

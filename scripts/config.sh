@@ -13,6 +13,9 @@ echo
 echo "#define __arch__ $ARCH"
 echo "#define __platform__ $PLATFORM"
 
+echo "namespace arch {}"
+echo "namespace platform {}"
+
 echo
 echo "#endif /* !CONFIG_HH_ */"
 

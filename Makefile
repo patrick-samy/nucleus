@@ -1,10 +1,4 @@
-# Version
-VERSION			:= 0.1
-
-# Default target architecture to i386
-ARCH	 		?= ia-32
-PLATFORM 		?= ibm-pc
-CROSS_COMPILE           ?=
+include build.conf
 
 # Build tools
 AS			:= $(CROSS_COMPILE)as
@@ -19,9 +13,8 @@ OBJCOPY			:= $(CROSS_COMPILE)objcopy
 OBJDUMP			:= $(CROSS_COMPILE)objdump
 
 # Rule helpers
-CCOMP			= $(CC) $(CFLAGS) -o $@ -c $<
-CXXCOMP			= $(CXX) $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
-CDEPS			= $(CC) -MM -MG  $(CFLAGS) -o $@ -c $<
+CCOMP			= $(CC) -MD $(CFLAGS) -o $@ -c $<
+CXXCOMP			= $(CXX) -MD $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
 LLINK			= $(AR) csr $@ $^
 LINK			= $(LD) $(LDFLAGS) -o $@ $^
 

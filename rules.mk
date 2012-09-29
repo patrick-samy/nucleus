@@ -23,21 +23,13 @@ $(CORE_DIR)/$(CONFIG_HEADER):
 
 # Actual generic rules
 %.o: %.c
-	$(CDEPS)
 	$(CCOMP)
 
 %.o: %.cc
-	$(CDEPS)
 	$(CXXCOMP)
 
 %.o: %.S
 	$(CCOMP)
-
-#%.d: %.c
-#	$(CDEPS)
-
-#%.d: %.cc
-#	$(CDEPS)
 
 %: %.o
 	$(LINK)
