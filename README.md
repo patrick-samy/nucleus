@@ -4,8 +4,7 @@
 #### Build instructions ####
 
 ```sh
-$ ./configure ARCH={ia-32,arm} PLATFORM={ibm-pc,omap,realview-pbx-a9} CROSS_COMPILE=toolchain_prefix
-$ make
+$ ./configure {ia-32,arm} {ibm-pc,omap,realview-pbx-a9} toolchain_prefix && make
 ```
 
 #### Testing ####
