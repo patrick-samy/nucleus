@@ -30,7 +30,7 @@ namespace std
         public:
             // stream format flags
             typedef unsigned int fmtflags;
-            // stream state flags
+            // stream state 
             typedef unsigned int iostate;
             // stream opening mode flags
             typedef unsigned int openmode;
@@ -108,12 +108,13 @@ namespace std
             ios_base& operator=(const ios_base& rhs);
 
         // attributes
+        protected:
+            void*       buffer_;
+
         private:
             fmtflags    format_flags_;
             streamsize  precision_;
             streamsize  width_;
-            iostate     state_;
-            void*       buffer_;
     };
 }
 

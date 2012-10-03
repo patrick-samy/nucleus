@@ -1,0 +1,58 @@
+#ifndef STD_OSTREAM_
+# define STD_OSTREAM_
+
+# include <ios>
+# include <streambuf>
+
+namespace std
+{
+    // Class for output streams
+    class ostream : public ios
+    {
+        // types
+        public:
+           class sentry;
+
+        // methods
+        public:
+            // constructor    
+            explicit ostream(streambuf* sb);
+            // destructor
+            virtual ~ostream();
+            // formatted output
+            ostream& operator<<(bool val);
+            ostream& operator<<(short val);
+            ostream& operator<<(unsigned short val);
+            ostream& operator<<(int val);
+            ostream& operator<<(unsigned int val);
+            ostream& operator<<(long val);
+            ostream& operator<<(unsigned long val);
+            ostream& operator<<(float val);
+            ostream& operator<<(double val);
+            ostream& operator<<(long double val);
+            ostream& operator<<(const void* val);
+            ostream& operator<<(streambuf* sb);
+            ostream& operator<<(ostream& (*pf)(ostream&));
+            ostream& operator<<(ios& (*pf)(ios&));
+            ostream& operator<<(ios_base& (*pf)(ios_base&));
+            ostream& operator<<(ostream& out, char c);
+            ostream& operator<<(ostream& out, signed char c);
+            ostream& operator<<(ostream& out, unsigned char c);
+            ostream& operator<<(ostream& out, const char* s);
+            ostream& operator<<(ostream& out, const signed char* s);
+            ostream& operator<<(ostream& out, const unsigned char* s);
+            // unformatted output
+            ostream& put(char c);
+            ostream& write(const char* s, streamsize n);
+            // positioning
+            streampos tellp();
+            stream& seekp(streampos pos);
+            ostream& seekp(streamoff off, ios_base::seekdir dir);
+            // synchronization
+            ostream& flush();
+    };
+}
+
+# include <ostream.hxx>
+
+#endif /* !STD_OSTREAM_ */

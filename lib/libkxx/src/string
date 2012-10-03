@@ -1,0 +1,8 @@
+#ifndef STD_STRING_
+# define STD_STRING_
+
+namespace std
+{
+}
+
+#endif /* !STD_STRING_ */

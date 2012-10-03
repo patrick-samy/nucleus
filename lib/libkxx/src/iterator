@@ -1,0 +1,9 @@
+#ifndef STD_ITERATOR_
+# define STD_ITERATOR_
+
+namespace std
+{
+    class
+}
+
+#endif /* !STD_ITERATOR_ */

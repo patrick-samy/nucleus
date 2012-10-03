@@ -1,0 +1,108 @@
+#ifndef STD_STREAMBUF_
+# define STD_STREAMBUF_
+
+# include <cstdio>
+# include <ios_base>
+
+namespace std
+{
+    // Types
+    typedef long long streamoff;
+    
+    // Base class for holding offset and state of streams
+    class streampos
+    {
+        // methods
+        public:
+            // constructor
+            streampos(streamoff offset);
+            // getter
+            operator streamoff() const { return offset_; }
+            // offset operator
+            streampos& operator+=(streamoff offset);
+            streampos operator+(streamoff offset) const;
+            streampos& operator-=(streamoff offset);
+            streampos operator-(streamoff offset) const;
+
+        // attributes
+        private:
+            streamoff offset_;
+    };
+
+    // Base buffer class for streams working with char type
+    class streambuf
+    {
+        // methods
+        public:
+            // destructor
+            virtual ~streambuf();
+            // buffer management
+            streambuf* pubsetbuf(char* s, streamsize n);
+            streampos pubseekoff(streamoff          offset,
+                                 ios_base::seekdir  direction,
+                                 ios_base::openmode mode = ios_base::in |
+                                                           ios_base::out);
+            streampos pubseekpos(streampos          seek_position,
+                                 ios_base::openmode mode = ios_base::in |
+                                                           ios_base::out);
+            int pubsync();
+            // input
+            streamsize in_avail();
+            int snextc();
+            int sbumpc();
+            int sgetc();
+            streamsize sgetn(char* s, streamsize n);
+            int sputbackc(char c);
+            int sungetc();
+            // output
+            int sputc(char c);
+            streamsize sputn(const char* s, streamsize n);
+
+        protected:
+            // constructor
+            streambuf();
+            streambuf(const streambuf& rhs);
+            streambuf operator=(const streambuf& rhs);
+            // input
+            char* eback() const;
+            char* gptr() const;
+            char* egptr() const;
+            void gbump(int n);
+            void setg(char* gbeg, char* gnext, char* gend);
+            virtual streamsize showmanyc();
+            virtual streamsize xsgetn(char* s, streamsize n);
+            virtual int underflow();
+            virtual int uflow();
+            virtual int pbackfail(int c = EOF);
+            // output
+            char* pbase();
+            char* pptr();
+            char* epptr();
+            void pbump(int n);
+            void setp(char* pbeg, char* pend);
+            virtual streamsize xsputn(const char* s, streamsize n);
+            virtual int overflow(int c = EOF);
+            // buffer management
+            virtual streambuf* setbuf(char* s, streamsize n);
+            virtual streampos seekoff(streamoff             offset,
+                                      ios_base::seekdir     direction,
+                                      ios_base::openmode    mode);
+            virtual streampos seekpos(streampos             sp,
+                                      ios_base::openmode    mode =
+                                        ios_base::in | ios_base::out);
+            virtual int sync();
+
+        // attributes
+        private:
+            char* input_begin_position_;
+            char* input_current_position_;
+            char* input_end_position_;
+            char* output_begin_position_;
+            char* output_current_position_;
+            char* output_end_position_;
+    };
+}
+
+# include "streambuf.hxx"
+
+#endif /* !STD_STREAMBUF_ */

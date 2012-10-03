@@ -1,0 +1,50 @@
+#ifndef STD_IOS_
+# define STD_IOS_
+
+# include <streambuf> 
+
+namespace std
+{
+    // Class for stream classes working with char type
+    class ios : public ios_base
+    {
+        // methods
+        public:
+            // constructor
+            explicit ios(streambuf* buffer);
+            // destructor
+            virtual ~ios();
+            // initialization
+            void init(void* buffer);
+            // state flag
+            bool good() const;
+            bool eof() const;
+            bool fail() const;
+            bool bad() const;
+            bool operator!() const;
+            operator void*() const;
+            iostate rdstate() const;
+            void setstate(iostate state);
+            void clear(iostate state = goodbit);
+            // formatting
+            ios& copyfmt(const ios& rhs);
+            char fill() const;
+            char fill(char ch);
+            // other
+            streambuf* rdbuf() const;
+            streambuf* rdbuf(streambuf* sb);
+
+        protected:
+            // constructor
+            ios();
+
+        // attributes
+        public:
+            iostate state_;
+            char    fill_;
+    };
+}
+
+# include <ios.hxx>
+
+#endif /* !STD_IOS_ */
