@@ -17,7 +17,7 @@ namespace std
             // constructor
             streampos(streamoff offset);
             // getter
-            operator streamoff() const { return offset_; }
+            operator streamoff() const;
             // offset operator
             streampos& operator+=(streamoff offset);
             streampos operator+(streamoff offset) const;

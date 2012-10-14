@@ -5,6 +5,7 @@ $(eval $(call add_include,../libk/src))
 # Add subdirectories
 $(eval $(call add_sources,src/ios_base.cc   \
                           src/ios.cc        \
+                          src/ostream.cc    \
                           src/streambuf.cc))
 
 # Build archive
