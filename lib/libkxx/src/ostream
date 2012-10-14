@@ -1,11 +1,64 @@
 #ifndef STD_OSTREAM_
 # define STD_OSTREAM_
 
+# include <iterator>
 # include <ios>
 # include <streambuf>
 
 namespace std
 {
+    // Class for iterators on stream output buffers
+    class ostreambuf_iterator :
+        public iterator<output_iterator_tag, void, void, void, void>
+    {
+        // methods
+        public:
+            ostreambuf_iterator(ostream& s);
+            ostreambuf_iterator(streambuf* s);
+            ostreambuf_iterator& operator=(char c);
+            ostreambuf_iterator& operator*();
+            ostreambuf_iterator& operator++();
+            ostreambuf_iterator& operator++(int);
+            bool failed() const;
+
+        // attributes
+        private:
+            streambuf*  buffer_;
+            char        last_;
+    };
+
+    // Class used for formatting numeric values
+    class num_put
+    {
+        // constants
+        private:
+            const char true_string[5] = "true";
+            const char false_string[6] = "false";
+
+        // methods
+        public:
+            // constructor
+            explicit num_put(size_t refs = 0);
+            // put function for each integer type
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, bool val) const;
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, long val) const;
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, unsigned long val) const;
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, double val) const;
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, long double val) const;
+            ostreambuf_iterator put(ostreambuf_iterator out, ios_base& str, char fill, const void* val) const;
+         
+         protected:
+            // destructor
+            virtual ~num_put();
+            // polymorphic function for redefining the behaviour of each put overload
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, bool val) const;
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, long val) const;
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, unsigned long val) const;
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, double val) const;
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, long double val) const;
+            virtual ostreambuf_iterator do_put (ostreambuf_iterator out, ios_base& str, char fill, const void* val) const;
+    };
+
     // Class for output streams
     class ostream : public ios
     {
@@ -20,6 +73,10 @@ namespace std
             // destructor
             virtual ~ostream();
             // formatted output
+            ostream& operator<<(streambuf* sb);
+            ostream& operator<<(ostream& (*pf)(ostream&));
+            ostream& operator<<(ios& (*pf)(ios&));
+            ostream& operator<<(ios_base& (*pf)(ios_base&));
             ostream& operator<<(bool val);
             ostream& operator<<(short val);
             ostream& operator<<(unsigned short val);
@@ -31,10 +88,6 @@ namespace std
             ostream& operator<<(double val);
             ostream& operator<<(long double val);
             ostream& operator<<(const void* val);
-            ostream& operator<<(streambuf* sb);
-            ostream& operator<<(ostream& (*pf)(ostream&));
-            ostream& operator<<(ios& (*pf)(ios&));
-            ostream& operator<<(ios_base& (*pf)(ios_base&));
             ostream& operator<<(ostream& out, char c);
             ostream& operator<<(ostream& out, signed char c);
             ostream& operator<<(ostream& out, unsigned char c);
