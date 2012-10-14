@@ -13,13 +13,13 @@ OBJCOPY			:= $(CROSS_COMPILE)objcopy
 OBJDUMP			:= $(CROSS_COMPILE)objdump
 
 # Rule helpers
-CCOMP			= $(CC) -MD $(CFLAGS) -o $@ -c $<
-CXXCOMP			= $(CXX) -MD $(CFLAGS) $(CXXFLAGS) -o $@ -c $<
+CCOMP			= $(CC) -MD $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
+CXXCOMP			= $(CXX) -MD $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
 LLINK			= $(AR) csr $@ $^
 LINK			= $(LD) $(LDFLAGS) -o $@ $^
 
-# Deactivate default rules
-MAKEFLAGS               := -rR --warn-undefined-variables
+# Deactivate default rules and show warnings
+MAKEFLAGS               += -no-builtin-rules -no-builtin-variables --warn-undefined-variables
 
 # Directories
 LIBK_DIR		:= lib/libk
@@ -31,10 +31,14 @@ MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
 
 # Flags
+CPPFLAGS                :=
 CFLAGS			:=
 CXXFLAGS 		:= -nostdinc -nostdlib -ffreestanding -fno-builtin \
 -fno-exceptions -fno-rtti -std=c++0x -O2
+ASFLAGS                 :=
 LDFLAGS			:=
+TARGET_ARCH             :=
+TARGET_MACH             :=
 
 # Config
 CONFIG_SCRIPT           := $(SCRIPTS_DIR)/config.sh

@@ -14,7 +14,7 @@ SP		:= $$(basename $$(SP))
 endef
 
 define add_include
-CFLAGS 		:= $$(CFLAGS) -I$$(D)/$1
+CPPFLAGS 	:= $$(CPPFLAGS) -I$$(D)/$1
 endef
 
 define add_sources
@@ -30,9 +30,6 @@ DEPS_$$(D) 	:= $$(OBJS_$$(D):%.o=%.d)
 CLEAN		:= $$(CLEAN) $$(OBJS_$$(D)) $$(DEPS_$$(D))
 
 -include $$(DEPS_$$(D))
-
-# Use add_include instead
-#$$(OBJS_$$(D)): CFLAGS := $$(CFLAGS) -I$$(D)
 endef
 
 define make_archive
