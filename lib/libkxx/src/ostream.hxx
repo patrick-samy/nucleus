@@ -3,11 +3,406 @@
 
 namespace std
 {
+    // ostream
+    inline ostream& ostream::operator<<(streambuf* sb)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            if (sb)
+            {
+                ostreambuf_iterator it(*this);
+                long                c = 0;
+
+                for (; sb->sgetc() != EOF; ++it, ++c)
+                {
+                    *it = sb->sbumpc();
+                    if (it.failed())
+                        break;
+                }
+
+                if (c == 0)
+                    setstate(ios_base::failbit);
+            }
+            else
+                setstate(ios_base::badbit);
+        }
+
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(ostream& (*pf)(ostream&))
+    {
+        return (pf(*this));
+    }
+
+    inline ostream& ostream::operator<<(ios& (*pf)(ios&))
+    {
+        pf(*this);
+
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(ios_base& (*pf)(ios_base&))
+    {
+        pf(*this);
+
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(bool val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(short val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), static_cast<long>(val))
+                    .failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(unsigned short val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), static_cast<unsigned long>(val))
+                    .failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(int val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), static_cast<long>(val)).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(unsigned int val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), static_cast<unsigned long>(val))
+                    .failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(long val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(unsigned long val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(float val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), static_cast<double>(val))
+                    .failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(double val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(long double val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+
+        return (*this);
+    }
+
+    inline ostream& ostream::operator<<(const void* val)
+    {
+        sentry s(*this);
+
+        if (s)
+        {
+            ostreambuf_iterator it(*this);
+            num_put             p;
+
+            if (p.put(it, *this, this->fill(), val).failed())
+                this->setstate(ios_base::badbit | ios_base::failbit);
+        }
+
+        return (*this);
+    }
+
+    inline ostream& ostream::put(char c)
+    {
+        ostreambuf_iterator it(*this);
+
+        *it = c;
+        if (it.failed())
+            setstate(ios_base::badbit);
+
+        return (*this);
+    }
+
+    inline ostream& ostream::write(const char* s, streamsize n)
+    {
+        if (n)
+        {
+            ostreambuf_iterator it(*this);
+
+            for (; n; --n, ++it, ++s)
+            {
+                *it = *s;
+                if (it.failed())
+                {
+                    setstate(ios_base::badbit);
+                    break;
+                }
+            }
+        }
+
+        return (*this);
+    }
+
+    inline streampos ostream::tellp()
+    {
+        if (fail())
+            return streampos(-1);
+
+        return rdbuf()->pubseekoff(0, ios_base::cur, ios_base::out);
+    }
+
+    inline ostream& ostream::seekp(streampos pos)
+    {
+        if (!fail())
+        {
+            if (rdbuf()->pubseekpos(pos, ios_base::out) == streampos(-1))
+                setstate(ios_base::failbit);
+        }
+
+        return (*this);
+    }
+
+    inline ostream& ostream::seekp(streamoff off, ios_base::seekdir dir)
+    {
+        if (!fail())
+            rdbuf()->pubseekoff(off, dir, ios_base::out);
+
+        return (*this);
+    }
+
+    inline ostream& ostream::flush()
+    {
+        if (rdbuf())
+        {
+            if (rdbuf()->pubsync() == - 1)
+                setstate(ios_base::badbit);
+        }
+
+        return (*this);
+    }
+
+    // ostream::sentry
+    inline ostream::sentry::operator bool() const
+    {
+        return ok_;
+    }
+
+    // global functions for ostream
+    inline ostream& operator<<(ostream& out, char c)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+        {
+            ostreambuf_iterator it(out);
+            
+            *it = c;
+            if (it.failed())
+                out.setstate(ios_base::badbit | ios_base::failbit);
+        }
+        
+        return out;
+    }
+
+    inline ostream& operator<<(ostream& out, signed char c)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+        {
+            ostreambuf_iterator it(out);
+
+            *it = static_cast<char>(c);
+            if (it.failed())
+                out.setstate(ios_base::badbit | ios_base::failbit);
+        }
+
+        return out;
+    }
+
+    inline ostream& operator<<(ostream& out, unsigned char c)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+        {
+            ostreambuf_iterator it(out);
+            
+            *it = static_cast<char>(c);
+            if (it.failed())
+                out.setstate(ios_base::badbit | ios_base::failbit);
+        }
+
+        return out;
+    }
+
+    inline ostream& operator<<(ostream& out, const char* str)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+        {
+            ostreambuf_iterator it(out);
+
+            while (*str != '\0')
+            {
+                *it++ = static_cast<char>(*str);
+
+                if (it.failed())
+                {
+                    out.setstate(ios_base::badbit | ios_base::failbit);
+                    break;
+                }
+            }
+        }
+
+        return out;
+    }
+
+    inline ostream& operator<<(ostream& out, const signed char* str)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+            out << (const char*)str;
+
+        return out;
+    }
+
+    inline ostream& operator<<(ostream& out, const unsigned char* str)
+    {
+        ostream::sentry s(out);
+
+        if (s)
+            out << (const char*)str;
+
+        return out;
+    }
+    
     // ostreambuf_iterator
     inline ostreambuf_iterator& ostreambuf_iterator::operator=(char c)
     {
         if (!failed())
-            last_ = buffer_->putc(c);
+            last_ = buffer_->sputc(c);
         
         if (last_ == EOF)
             buffer_ = 0;
@@ -84,13 +479,13 @@ namespace std
                                                char                 fill,
                                                bool                 val) const
     {
-        size_t      length = val ? sizeof(num_put::true_string) : sizeof(num_put::false_string);
-        const char  boolean_string[] = val ? num_put::true_string : num_put::false_string;
+        long        length = val ? sizeof(num_put::true_string) : sizeof(num_put::false_string);
+        const char* boolean_string = val ? num_put::true_string : num_put::false_string;
         
         if ((str.flags() & ios_base::boolalpha) == 0)
             return do_put(out, str, fill, (unsigned long)val);
 
-        for (size_t i = 0; i < length - 1; ++i, ++out)
+        for (long i = 0; i < length - 1; ++i, ++out)
             *out = boolean_string[i];
 
         return out;
@@ -162,396 +557,6 @@ namespace std
                                                const void*          val) const
     {
         // FIXME
-    }
-
-    // ostream
-    inline ostream& ostream::operator<<(streambuf* sb)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            if (sb)
-            {
-                istreambuf_iterator eof;
-                istreambuf_iterator input_it(sb);
-                ostreambuf_iteator  output_it(*this);
-                size_t              c = 0;
-
-                for (; input_it != eof; ++input_it, ++output_it, ++c)
-                {
-                    *output_it = *input_it;
-                    if (output_it.failed())
-                        break;
-                }
-
-                if (c == 0)
-                    setstate(ios_base::failbit);
-            }
-            else
-                setstate(ios_base::badbit);
-        }
-
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(ostream& (*pf)(ostream&))
-    {
-        return (pf(*this));
-    }
-
-    inline ostream& ostream::operator<<(ios& (*pf)(ios&))
-    {
-        pf(*this);
-
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(ios_base& (*pf)(ios_base&))
-    {
-        pf(*this);
-
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(bool val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(short val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), static_cast<long>(val))
-                    .failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(unsigned short val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), static_cast<unsigned long>(val))
-                    .failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(int val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), static_cast<long>(val)).failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(unsigned int val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), static_cast<unsigned long>(val))
-                    .failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(long val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(unsigned long val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(float val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), static_cast<double>(val))
-                    .failed())
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(double val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed()
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(long double val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed()
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(const void* val)
-    {
-        sentry s(*this);
-
-        if (s)
-        {
-            ostreambuf_iterator it(*this);
-            num_put             p;
-
-            if (p.put(it, this, this->fill(), val).failed()
-                this->setstate(ios_base::badbit | ios_base::failbit);
-        }
-
-        return (*this);
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, char c)
-    {
-        sentry s(out);
-
-        if (s)
-        {
-            ostreambuf_iterator it(out);
-            
-            *it = c;
-            if (it.failed())
-                out->setstate(ios_base::badbit | ios_base::failbit);
-        }
-        
-        return out;
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, signed char c)
-    {
-        sentry s(out);
-
-        if (s)
-        {
-            ostreambuf_iterator it(out);
-
-            *it = static_cast<char>(c);
-            if (it.failed())
-                out->setstate(ios_base::badbit | ios_base::failbit);
-        }
-
-        return out;
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, unsigned char c)
-    {
-        sentry s(out);
-
-        if (s)
-        {
-            ostreambuf_iterator it(out);
-            
-            *it = static_cast<char>(c);
-            if (it.failed())
-                out->setstate(ios_base::badbit | ios_base::failbit);
-        }
-
-        return out;
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, const char* s)
-    {
-        sentry s(out);
-
-        if (s)
-        {
-            ostreambuf_iterator it(out);
-
-            while (*s != '\0')
-            {
-                *it++ = static_cast<char>(*s);
-
-                if (it.failed())
-                {
-                    this->setstate(ios_base::badbit | ios_base::failbit);
-                    break;
-                }
-            }
-        }
-
-        return out;
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, const signed char* s)
-    {
-        sentry s(*this);
-
-        if (s)
-            out << static_cast<const char*>(s);
-
-        return out;
-    }
-
-    inline ostream& ostream::operator<<(ostream& out, const unsigned char* s)
-    {
-        sentry s(*this);
-
-        if (s)
-            out << static_cast<const char*>(s);
-
-        return out;
-    }
-
-    inline ostream& ostream::put(char c)
-    {
-        ostreambuf_iterator it(*this);
-
-        *it = c;
-        if (it.failed())
-            setstate(ios_base::badbit);
-
-        return (*this);
-    }
-
-    inline ostream& ostream::write(const char* s, streamsize n)
-    {
-        if (n)
-        {
-            ostreambuf_iterator it(*this);
-
-            for (; n; --n, ++it, ++s)
-            {
-                *it = *s;
-                if (it.failed())
-                {
-                    setstate(ios_base::badbit);
-                    break;
-                }
-            }
-        }
-
-        return (*this);
-    }
-
-    inline streampos ostream::tellp()
-    {
-        if (fail())
-            return streampos(-1);
-
-        return rdbuf()->pubseekoff(0, ios_base::cur, ios_base::out);
-    }
-
-    inline stream& ostream::seekp(streampos pos)
-    {
-        if (!fail())
-        {
-            if (rdbuf()->pubseekpos(pos, ios_base::out) == streampos(-1))
-                setstate(ios_base::failbit);
-        }
-
-        return (*this);
-    }
-
-    inline ostream& ostream::seekp(streamoff off, ios_base::seekdir dir)
-    {
-        if (!fail())
-            rdbuf()->pubseekoff(off, dir, ios_base::out);
-
-        return (*this);
-    }
-
-    inline ostream& ostream::flush()
-    {
-        if (rdbuf())
-        {
-            if (rdbuf()->pubsync() == - 1)
-                setstate(ios_base::badbit);
-        }
-
-        return (*this);
     }
 }
 

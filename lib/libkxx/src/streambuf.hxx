@@ -4,10 +4,10 @@
 namespace std
 {
     // streampos
-    /*inline operator streampos::streamoff() const
+    inline streampos::operator streamoff() const
     {
         return offset_;
-    }*/
+    }
 
     inline streampos& streampos::operator+=(streamoff offset)
     {

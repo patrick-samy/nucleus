@@ -1,0 +1,6 @@
+#ifndef STD_CSTDDEF_
+# define STD_CSTDDEF_
+
+# include <stddef.h>
+
+#endif /* !STD_CSTDDEF_ */
