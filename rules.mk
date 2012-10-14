@@ -21,7 +21,19 @@ $(eval $(call make_binary,atom.elf,				    \
 $(CORE_DIR)/$(CONFIG_HEADER):
 	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $@
 
+# Generic rules
+%.o: %.c
+	$(CCOMP)
+
+%.o: %.cc
+	$(CXXCOMP)
+
+%.o: %.S
+	$(CCOMP)
+
 # Misc rules
+.SUFFIXES:
+
 .PHONY: targets
 targets: $(BINARIES)
 

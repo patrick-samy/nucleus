@@ -13,13 +13,13 @@ OBJCOPY			:= $(CROSS_COMPILE)objcopy
 OBJDUMP			:= $(CROSS_COMPILE)objdump
 
 # Rule helpers
-CCOMP			= $(CC) -MD $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
-CXXCOMP			= $(CXX) -MD $(CPPFLAGS) $(CXXFLAGS) -o $@ -c $<
+CCOMP			= $(CC) -MD $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+CXXCOMP			= $(CXX) -MD $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 LLINK			= $(AR) csr $@ $^
 LINK			= $(LD) $(LDFLAGS) -o $@ $^
 
 # Deactivate default rules and show warnings
-MAKEFLAGS               += -no-builtin-rules -no-builtin-variables --warn-undefined-variables
+MAKEFLAGS               := --no-builtin-rules --no-builtin-variables --warn-undefined-variables
 
 # Directories
 LIBK_DIR		:= lib/libk
