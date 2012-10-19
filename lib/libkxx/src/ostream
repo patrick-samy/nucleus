@@ -1,9 +1,9 @@
-#ifndef eSTD_OSTREAM_
+#ifndef STD_OSTREAM_
 # define STD_OSTREAM_
 
-# include <iterator>
 # include <ios>
 # include <streambuf>
+# include <iterator>
 
 namespace std
 {

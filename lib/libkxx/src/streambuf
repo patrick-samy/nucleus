@@ -55,7 +55,7 @@ namespace std
             int sputbackc(char c);
             int sungetc();
             // output
-            int sputc(char c);
+            virtual int sputc(char c);
             streamsize sputn(const char* s, streamsize n);
 
         protected:

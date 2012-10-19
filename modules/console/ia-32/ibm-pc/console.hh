@@ -1,38 +1,47 @@
-#ifndef IA32_IBMPC_CONSOLE_HH_
-# define IA32_IBMPC_CONSOLE_HH_
+#ifndef PLATFORM_CONSOLE_HH_
+# define PLATFORM_CONSOLE_HH_
 
-# include "modules/console/console.hh"
+# include <streambuf>
+# include <drivers/video/ibm-pc/vga.hh>
 
 namespace platform 
 {
-  class Console : public module::Console
-  {
-    private:
-      typedef struct console_char
-      {
-        char ch;
-        char fg:4;
-        char bg:4;
-      } __attribute__((packed)) console_char_t;
+    // Class for VGA consoles on IBM PC
+    class Console
+    {
+        // types
+        private:
+            class Buffer;
 
-    public:
-      static Console& 	instance();
+            // methods
+        public:
+            // constructor
+            Console(unsigned int rows, unsigned int cols);
+            // getters & setters
+            std::streambuf& get_streambuf();
+            // display
+            void flush();
 
-      void operator<<(const char* str);
-      void operator<<(console_modifiers_e mod);
+        private:
+            void put(char c);
 
-      void print_char(char c);
-      void clear();
+            // attributes
+        private:
+            Buffer&          streambuf_;
+            unsigned int    width_;
+            unsigned int    height_;
+            unsigned int    row_;
+            unsigned int    col_;
+    };
 
-    private:
-      Console();
+    // Inner class for console buffers
+    class Console::Buffer : public std::streambuf
+    {
+        // methods
+        public:
 
-    private:
-      int		modifier_;
-      unsigned int	row_;
-      unsigned int	col_;
-  };
+    };
 }
 
-#endif /* !MODULE_IA32_IBMPC_CONSOLE_HH_ */
+#endif /* !PLATFORM_CONSOLE_HH_ */
 
