@@ -3,6 +3,10 @@
 namespace std
 {
     // ostream
+    ostream::ostream()
+    {
+    }
+    
     ostream::ostream(streambuf* sb)
     {
         init(sb);
@@ -11,6 +15,7 @@ namespace std
     ostream::~ostream()
     {
     }
+
     
     // ostream::sentry
     ostream::sentry::sentry(ostream& os)

@@ -1,6 +1,5 @@
-# Add subdirectories
-$(eval $(call add_subdirectory,console/$(ARCH)/$(PLATFORM)))
+MODULES=modules/console/console.a
 
-# Build archive
-$(eval $(call make_archive,modules.a))
+# Add subdirectories
+$(eval $(call add_subdirectory,console))
 

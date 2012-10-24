@@ -1,9 +1,12 @@
-#include "core/macros.hh"
+#include <core/core.hh>
 #include module(console)
 
 #define ever (;;)
 
-void main()
+namespace core
 {
-  for ever;
+    void main()
+    {
+        for ever;
+    }
 }

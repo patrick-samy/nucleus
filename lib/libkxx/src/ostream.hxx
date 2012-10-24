@@ -4,6 +4,11 @@
 namespace std
 {
     // ostream
+    inline void ostream::set_streambuf(streambuf* sb)
+    {
+        init(sb);
+    }
+
     inline ostream& ostream::operator<<(streambuf* sb)
     {
         sentry s(*this);
@@ -425,6 +430,11 @@ namespace std
         return (*this);
     }
 
+    inline bool ostreambuf_iterator::failed() const
+    {
+        return (buffer_ == 0);
+    }
+
     // num_put
     inline ostreambuf_iterator num_put::put(ostreambuf_iterator out,
                                            ios_base&            str,
@@ -479,8 +489,8 @@ namespace std
                                                char                 fill,
                                                bool                 val) const
     {
-        long        length = val ? sizeof(num_put::true_string) : sizeof(num_put::false_string);
-        const char* boolean_string = val ? num_put::true_string : num_put::false_string;
+        long        length = val ? sizeof("true") : sizeof("false");
+        const char* boolean_string = val ? "true" : "false";
         
         if ((str.flags() & ios_base::boolalpha) == 0)
             return do_put(out, str, fill, (unsigned long)val);

@@ -1,0 +1,11 @@
+#ifndef STD_IOSTREAM
+# define STD_IOSTREAM
+
+# include <ostream>
+
+namespace std
+{
+    extern ostream kout; 
+}
+
+#endif /* !STD_IOSTREAM */

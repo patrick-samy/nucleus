@@ -48,6 +48,8 @@ namespace platform
 
         // methods
         public:
+            // singleton accessor
+            static Vga& instance();
             // inherited from video driver class
             
             // vga related methods
@@ -59,6 +61,10 @@ namespace platform
             void put(unsigned int row, unsigned int col, char c);
 
         private:
+            // constructors
+            Vga();
+            Vga(const Vga&);
+            // implementation related
             void put(unsigned int row, unsigned int col, buffer_char_t c);
 
         // attributes

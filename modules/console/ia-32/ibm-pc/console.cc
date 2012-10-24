@@ -2,34 +2,137 @@
 
 namespace platform 
 {
+    // Console
     Console::Console(unsigned int rows, unsigned int cols)
-      : streambuf_(rows * cols),
-        width_(cols),
+      : width_(cols),
         height_(rows),
         row_(0),
         col_(0)
     {
+        streambuf_.init(this, cols * rows);
     }
 
-    inline streambuf& get_streambuf()
+    std::streambuf& Console::get_streambuf()
     {
         return streambuf_;
     }
 
-    void Console::flush()
+    void Console::flush_streambuf()
     {
+        char* it = streambuf_.get_begin();
+        char* end = streambuf_.get_end();
+
+        for (; it != end; ++it)
+            this->put(*it);
     }
 
     void Console::put(char c)
     {
         platform::Vga::instance().put(row_, col_++, c);
         
-        if (col_ >= width)
+        if (col_ >= width_)
         {
             col_ = 0;
-            if (++row_ >= height)
+            if (++row_ >= height_)
                 row_ = 0;
         }
+    }
+
+    // Console::Buffer
+    Console::Buffer::Buffer()
+      : console_(nullptr),
+        size_(0)
+    {
+    }
+
+    Console::Buffer::~Buffer()
+    {
+    }
+    
+    void Console::Buffer::init(Console* c, std::streamsize size)
+    {
+        console_ = c;
+        size_ = size;
+
+        this->setp(output_buffer_, output_buffer_ + size);
+    }
+
+    char* Console::Buffer::get_begin()
+    {
+        return this->pbase();
+    }
+
+    char* Console::Buffer::get_end()
+    {
+        return this->pptr();
+    }
+
+    std::streamsize Console::Buffer::xsputn(const char* s, std::streamsize n)
+    {
+        std::streamsize i;
+
+        for (i = 0;  i < n; ++i)
+        {
+            if (this->sputc(s[i]) == EOF)
+                break;
+        }
+
+        return i;
+    }
+
+    std::streambuf* Console::Buffer::setbuf(char* s, std::streamsize n)
+    {
+        // TODO: Fix this when the buffer is properly allocated
+        //output_buffer_ = s;
+        size_ = n;
+        
+        this->setp(s, s + n);
+
+        return this;
+    }
+
+    std::streampos Console::Buffer::seekoff(std::streamoff          offset,
+                                            std::ios_base::seekdir  direction)
+    {
+        std::streampos pos(std::streamoff(-1));
+
+        switch (direction)
+        {
+            case std::ios_base::beg:
+                pos = 0;
+                break;
+
+            case std::ios_base::cur:
+                pos = this->pptr() - this->pbase();
+                break;
+
+            case std::ios_base::end:
+                pos = this->epptr() - this->pbase();
+                break;
+
+            default:
+                break;
+        }
+
+        return (this->seekpos(pos + offset));
+    }
+
+    std::streampos Console::Buffer::seekpos(std::streampos pos)
+    {
+        if ((pos < 0) || (pos >= this->epptr() - this->pbase()))
+            return -1;
+
+        output_current_position_ = output_begin_position_ + pos;
+
+        return pos;
+    }
+
+    int Console::Buffer::sync()
+    {
+        console_->flush_streambuf();
+        this->setp(this->pbase(), this->epptr());
+
+        return 0;
     }
 }
 

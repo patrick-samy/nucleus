@@ -27,6 +27,7 @@ LIBKXX_DIR		:= lib/libkxx
 CORE_DIR		:= core
 ARCH_DIR		:= arch/$(ARCH)
 PLATFORM_DIR	        := $(ARCH_DIR)/$(PLATFORM)
+DRIVERS_DIR		:= drivers
 MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
 

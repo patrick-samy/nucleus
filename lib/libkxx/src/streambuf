@@ -55,7 +55,7 @@ namespace std
             int sputbackc(char c);
             int sungetc();
             // output
-            virtual int sputc(char c);
+            int sputc(char c);
             streamsize sputn(const char* s, streamsize n);
 
         protected:
@@ -93,7 +93,7 @@ namespace std
             virtual int sync();
 
         // attributes
-        private:
+        protected:
             char* input_begin_position_;
             char* input_current_position_;
             char* input_end_position_;

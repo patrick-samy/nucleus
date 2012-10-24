@@ -16,10 +16,13 @@ namespace std
 
         // methods
         public:
-            // constructor    
+            // constructor
+            explicit ostream();
             explicit ostream(streambuf* sb);
             // destructor
             virtual ~ostream();
+            // setter
+            void set_streambuf(streambuf* sb);
             // formatted output
             ostream& operator<<(streambuf* sb);
             ostream& operator<<(ostream& (*pf)(ostream&));
@@ -96,11 +99,6 @@ namespace std
     // Class used for formatting numeric values
     class num_put
     {
-        // constants
-        private:
-            static constexpr char true_string[5] = "true";
-            static constexpr char false_string[6] = "false";
-
         // methods
         public:
             // constructor
