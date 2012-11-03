@@ -17,7 +17,7 @@ namespace std
     void ios_base::init(void* buffer)
     {
         buffer_ = buffer;
-        format_flags_ = ios_base::skipws | dec; 
+        format_flags_ = skipws | dec; 
         width_ = 0;
         precision_ = 6;
     }

@@ -10,6 +10,7 @@ namespace platform
     }
 
     Vga::Vga()
+      : modifier_(MODIFIER_WHITE)
     {
     }
 
@@ -17,7 +18,7 @@ namespace platform
     {
     }
     
-    inline void Vga::set_mode(mode_e m)
+    void Vga::set_mode(mode_e m)
     {
         mode_ = m;
     }
@@ -38,12 +39,12 @@ namespace platform
         }
     }
 
-    inline void Vga::set_modifier(modifier_e m)
+    void Vga::set_modifier(modifier_e m)
     {
         modifier_ = m;
     }
 
-    inline void Vga::set_cursor(unsigned int row, unsigned int col)
+    void Vga::set_cursor(unsigned int row, unsigned int col)
     {
         // FIXME
     }

@@ -26,6 +26,11 @@ namespace platform
             this->put(*it);
     }
 
+    void Console::clear()
+    {
+        Vga::instance().clear();
+    }
+
     void Console::put(char c)
     {
         platform::Vga::instance().put(row_, col_++, c);

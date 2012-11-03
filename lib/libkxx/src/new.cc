@@ -1,0 +1,3 @@
+void operator delete(void*)
+{
+}

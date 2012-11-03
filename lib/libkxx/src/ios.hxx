@@ -6,7 +6,7 @@ namespace std
     inline void ios::init(void* buffer)
     {
         ios_base::init(buffer);
-        state_ = buffer_ ? ios_base::goodbit : ios_base::badbit;
+        state_ = 0;
         fill_ = ' ';
     }
 

@@ -1,5 +1,5 @@
-#ifndef STD_STREAM_HXX_
-# define STD_STREAM_HXX_
+#ifndef STD_OSTREAM_HXX_
+# define STD_OSTREAM_HXX_
 
 namespace std
 {
@@ -370,7 +370,7 @@ namespace std
 
             while (*str != '\0')
             {
-                *it++ = static_cast<char>(*str);
+                *it++ = static_cast<char>(*str++);
 
                 if (it.failed())
                 {
@@ -407,7 +407,11 @@ namespace std
     inline ostreambuf_iterator& ostreambuf_iterator::operator=(char c)
     {
         if (!failed())
+        {
             last_ = buffer_->sputc(c);
+            // TODO: Find a smarter way to sync
+            buffer_->pubsync();
+        }
         
         if (last_ == EOF)
             buffer_ = 0;
@@ -511,7 +515,7 @@ namespace std
         else if (str.flags() & ios_base::showpos)
             *out++ = '+';
 
-        return do_put(out, str, fill, -val);
+        return do_put(out, str, fill, (unsigned long) val);
     }
     
     inline ostreambuf_iterator num_put::do_put(ostreambuf_iterator  out,
@@ -519,7 +523,7 @@ namespace std
                                                char                 fill,
                                                unsigned long        val) const
     {
-        // TODO: Better than this ?
+        // TODO: Better than this ? +hex +oct
         unsigned long copy = val;
         unsigned long size = 1;
 
@@ -535,11 +539,11 @@ namespace std
             else
                 *out++ = 'x';
         }
-
-        while (val /= 10);
+        
+        while (val /= 10)
             size *= 10;
-
-        do *out++ = copy / size;
+        
+        do *out++ = '0' + (copy / size);
         while ((copy %= size) && (size /= 10));
 
         return out;
@@ -570,4 +574,4 @@ namespace std
     }
 }
 
-#endif /* !STD_STREAM_HXX_ */
+#endif /* !STD_OSTREAM_HXX_ */

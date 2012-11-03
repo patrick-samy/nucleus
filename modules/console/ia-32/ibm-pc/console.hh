@@ -48,6 +48,8 @@ namespace platform
             Console(unsigned int rows, unsigned int cols);
             // getters & setters
             std::streambuf& get_streambuf();
+            // console management
+            void clear();
             // display
             void flush_streambuf();
 

@@ -205,17 +205,17 @@ namespace std
 
     inline char* streambuf::pbase()
     {
-        return input_begin_position_;
+        return output_begin_position_;
     }
 
     inline char* streambuf::pptr()
     {
-        return input_current_position_;
+        return output_current_position_;
     }
 
     inline char* streambuf::epptr()
     {
-        return input_end_position_;
+        return output_end_position_;
     }
 
     inline void streambuf::pbump(int n)

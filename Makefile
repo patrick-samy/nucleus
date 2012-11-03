@@ -24,6 +24,7 @@ MAKEFLAGS               := --no-builtin-rules --no-builtin-variables --warn-unde
 # Directories
 LIBK_DIR		:= lib/libk
 LIBKXX_DIR		:= lib/libkxx
+LIBABI_DIR		:= lib/libabi
 CORE_DIR		:= core
 ARCH_DIR		:= arch/$(ARCH)
 PLATFORM_DIR	        := $(ARCH_DIR)/$(PLATFORM)
@@ -35,7 +36,7 @@ SCRIPTS_DIR		:= scripts
 CPPFLAGS                :=
 CFLAGS			:=
 CXXFLAGS 		:= -nostdinc -nostdlib -ffreestanding -fno-builtin \
--fno-exceptions -fno-rtti -std=c++0x -O2
+-fno-exceptions -fno-rtti -std=c++0x -g -ggdb 
 ASFLAGS                 :=
 LDFLAGS			:=
 TARGET_ARCH             :=

@@ -6,7 +6,8 @@ $(eval $(call add_include,../libk/src))
 $(eval $(call add_sources,src/ios_base.cc   \
                           src/ios.cc        \
                           src/ostream.cc    \
-                          src/streambuf.cc))
+                          src/streambuf.cc  \
+                          src/new.cc))
 
 # Build archive
 $(eval $(call make_archive,libkxx.a))
