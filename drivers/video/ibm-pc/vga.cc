@@ -10,7 +10,6 @@ namespace platform
     }
 
     Vga::Vga()
-      : modifier_(MODIFIER_WHITE)
     {
     }
 
@@ -39,9 +38,14 @@ namespace platform
         }
     }
 
-    void Vga::set_modifier(modifier_e m)
+    void Vga::set_fg_modifier(int flags)
     {
-        modifier_ = m;
+        fg_modifier_ = flags;
+    }
+    
+    void Vga::set_bg_modifier(int flags)
+    {
+        bg_modifier_ = flags;
     }
 
     void Vga::set_cursor(unsigned int row, unsigned int col)
@@ -60,8 +64,8 @@ namespace platform
         //if ((row) && (col))
 
         buffer_char.ch = c;
-        buffer_char.fg = modifier_;
-        buffer_char.bg = 0;
+        buffer_char.fg = fg_modifier_;
+        buffer_char.bg = bg_modifier_;
 
         Vga::put(row, col, buffer_char);
     }

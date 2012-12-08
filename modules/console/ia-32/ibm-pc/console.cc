@@ -16,6 +16,11 @@ namespace platform
     {
         return streambuf_;
     }
+    
+    void Console::set_verbose_level(e_verbose_level l)
+    {
+        verbose_level_ = l;
+    }
 
     void Console::flush_streambuf()
     {
@@ -33,7 +38,14 @@ namespace platform
 
     void Console::put(char c)
     {
-        platform::Vga::instance().put(row_, col_++, c);
+        if (c == std::ostream::eol)
+        {
+            ++row_;
+            col_ = 0;
+            return; 
+        }
+        else
+            Vga::instance().put(row_, col_++, c);
         
         if (col_ >= width_)
         {
@@ -138,6 +150,25 @@ namespace platform
         this->setp(this->pbase(), this->epptr());
 
         return 0;
+    }
+
+    // ostream operator overload for console modifier
+    std::ostream& operator<<(std::ostream& out, Console::e_message_type m)
+    {
+        switch (m)
+        {
+            case Console::INFO:
+                Vga::instance().set_fg_modifier(Vga::MODIFIER_WHITE);
+                break;
+            case Console::WARNING:
+                Vga::instance().set_fg_modifier(Vga::MODIFIER_YELLOW);
+                break;
+            case Console::ERROR:
+                Vga::instance().set_fg_modifier(Vga::MODIFIER_RED);
+                break;
+        }
+
+        return out;
     }
 }
 

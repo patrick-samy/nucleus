@@ -59,7 +59,8 @@ namespace platform
             void set_mode(mode_e m);
             void clear();
             // text buffer methods
-            void set_modifier(modifier_e m);
+            void set_fg_modifier(int flags);
+            void set_bg_modifier(int flags);
             void set_cursor(unsigned int row, unsigned int col);
             void put(unsigned int row, unsigned int col, char c);
 
@@ -72,8 +73,9 @@ namespace platform
 
         // attributes
         private:
-            mode_e          mode_;
-            modifier_e      modifier_;
+            mode_e  mode_;
+            int     fg_modifier_;
+            int     bg_modifier_;
     };
 }
 

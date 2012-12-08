@@ -7,12 +7,16 @@
 
 namespace std
 {
-   // Class for output streams
+    // Class for output streams
     class ostream : public ios
     {
         // types
         public:
            class sentry;
+
+        // constants
+        public:
+            static const char eol = '\n';
 
         // methods
         public:
@@ -68,13 +72,16 @@ namespace std
             ostream&    os_;
     };
 
-    // Global functions for ostream operator overloading
+    // Functions for ostream operator overloading
     ostream& operator<<(ostream& out, char c);
     ostream& operator<<(ostream& out, signed char c);
     ostream& operator<<(ostream& out, unsigned char c);
     ostream& operator<<(ostream& out, const char* s);
     ostream& operator<<(ostream& out, const signed char* s);
     ostream& operator<<(ostream& out, const unsigned char* s);
+    
+    // Functions used as ostream modifiers
+    ostream& endl(ostream& out);
     
     // Class for iterators on stream output buffers
     class ostreambuf_iterator :

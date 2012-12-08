@@ -6,6 +6,7 @@ $(eval $(call add_include,../libk/src))
 $(eval $(call add_sources,src/ios_base.cc   \
                           src/ios.cc        \
                           src/ostream.cc    \
+                          src/iostream.cc   \
                           src/streambuf.cc  \
                           src/new.cc))
 

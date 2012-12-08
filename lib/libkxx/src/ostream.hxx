@@ -3,7 +3,7 @@
 
 namespace std
 {
-    // ostream
+   // ostream
     inline void ostream::set_streambuf(streambuf* sb)
     {
         init(sb);
@@ -311,7 +311,7 @@ namespace std
         return ok_;
     }
 
-    // global functions for ostream
+    // function overloads for ostream
     inline ostream& operator<<(ostream& out, char c)
     {
         ostream::sentry s(out);
@@ -402,7 +402,15 @@ namespace std
 
         return out;
     }
-    
+   
+    // functions used as ostream modifiers
+    inline ostream& endl(ostream& out)
+    {
+        out << ostream::eol;
+
+        return out;
+    }
+
     // ostreambuf_iterator
     inline ostreambuf_iterator& ostreambuf_iterator::operator=(char c)
     {
