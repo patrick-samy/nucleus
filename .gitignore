@@ -1,0 +1,6 @@
+*.o
+*.conf
+*.a
+*.d
+*.elf
+core/config.hh
