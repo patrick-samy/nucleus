@@ -20,19 +20,27 @@ PLATFORMS[3]='mpc5510'
 BUILD_TYPES[0]='release'
 BUILD_TYPES[1]='debug'
 
+# Print an error message on stderr and exit 1.
+#  $1 : error message
+function die()
+{
+    echo -e $1 >& 2;
+    exit 1
+}
+
 # Usage printer
 function usage()
 {
     cat << EOUSAGE >& 2
 Usage: configure [OPTIONS]
 
-      --arch=VAL             VAL=[${ARCHS[*]}]. VAL defaults to ${ARCH}. Compatibility between arch and platform is not checked.
+      --arch=VAL             VAL=[${ARCHS[*]}]. VAL defaults to ${ARCH}
       --build-type=VAL       VAL=[${BUILD_TYPES[*]}]. VAL defaults to ${BUILD_TYPE}.
                               release : optimized code (-O2) whithout debug code (-DNDEBUG) and information (-g0).
                               debug : non-optimized code (-O0) with debug code (NDEBUG undefined) and information (-g3).
       --cross-compile=VAL    cross-compilation tools prefix. E.g. 'powerpc-eabi-'. VAL defaults to '${CROSS_COMPILE}'.
   -h, --help                 show this message and exit.
-      --platform=VAL         platform hosting a processor of the given architecture. VAL=[${PLATFORMS[*]}]. VAL defaults to ${PLATFORM}. Compatibility between arch and platform is not checked.
+      --platform=VAL         platform hosting a processor of the given architecture. VAL=[${PLATFORMS[*]}]. VAL defaults to ${PLATFORM}.
 EOUSAGE
 }
 
@@ -67,13 +75,11 @@ function check_and_set()
             ${VARIABLE}=${VALUE};
             ;;
         ?)
-            echo $OPTION possible values are [${!VALUES}];
-            exit
+            die \"$OPTION possible values are [${!VALUES}]\";
             ;;
         *)
-            echo -e \"error: unexpected ${OPTION} value.\n
-                     Possible values are [${!VALUES}]\"; >& 2;
-            exit 1;
+            die \"error: unexpected ${OPTION} value.\n
+                  Possible values are [${!VALUES}]\";
             ;;
     esac"
 
@@ -81,15 +87,24 @@ function check_and_set()
 }
 
 # Check the given prefix is valid using which command
-#  $1 : global variable to set.
-#  $2 : option being checked and set.
-#  $3 : user input value.
+#  $1 : option being checked and set.
+#  $2 : user input value.
 function check_and_set_cross_compile()
 {
-    which ${3}gcc >/dev/null 2>/dev/null;
+    which ${2}gcc >/dev/null 2>/dev/null;
     [ $? -ne 0 ] &&
-      echo "error: ${3}gcc not found in \$PATH" >& 2 &&
-      exit 1
+      die "error: invalid ${1} value. ${2}gcc not found in \$PATH"
+
+    CROSS_COMPILE=${2}
+}
+
+# An architecture and a platform are said "compatible" if the directories
+# arch/$ARCH/$PLATFORM exist.
+function check_arch_platform_compatibility()
+{
+    [ ! -d "arch/${ARCH}/${PLATFORM}" ] &&
+      die "error: ${ARCH} and ${PLATFORM} do not seem to be compatible.\n
+           Directory arch/${ARCH}/${PLATFORM} does not exist.";
 }
 
 # Quotes around $GETOPT are essential
@@ -99,7 +114,7 @@ while [ $# -gt 0 ]; do
     case "$1" in
         -h | --help)
             usage;
-            exit 0;
+            die;
             ;;
 
         --arch)
@@ -113,7 +128,7 @@ while [ $# -gt 0 ]; do
             ;;
 
         --cross-compile)
-            check_and_set_cross_compile 'CROSS_COMPILE' "$1" "$2";
+            check_and_set_cross_compile "$1" "$2";
             shift 2;
             ;;
 
@@ -128,6 +143,8 @@ while [ $# -gt 0 ]; do
             ;;
     esac
 done
+
+check_arch_platform_compatibility $ARCH $PLATFORM
 
 cat <<EOF > build.conf
 # Version
