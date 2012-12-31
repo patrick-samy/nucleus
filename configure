@@ -35,12 +35,19 @@ function usage()
 Usage: configure [OPTIONS]
 
       --arch=VAL             VAL=[${ARCHS[*]}]. VAL defaults to ${ARCH}
-      --build-type=VAL       VAL=[${BUILD_TYPES[*]}]. VAL defaults to ${BUILD_TYPE}.
-                              release : optimized code (-O2) whithout debug code (-DNDEBUG) and information (-g0).
-                              debug : non-optimized code (-O0) with debug code (NDEBUG undefined) and information (-g3).
-      --cross-compile=VAL    cross-compilation tools prefix. E.g. 'powerpc-eabi-'. VAL defaults to '${CROSS_COMPILE}'.
+      --build-type=VAL       VAL=[${BUILD_TYPES[*]}]. VAL defaults to
+                             ${BUILD_TYPE}.
+                              release : optimized code (-O2) whithout debug
+                              code (-DNDEBUG) and information (-g0).
+                              debug : non-optimized code (-O0) with debug code
+                              (NDEBUG undefined) and information (-g3).
+      --cross-compile=VAL    cross-compilation tools prefix.
+                             E.g. 'powerpc-eabi-'.
+                             VAL defaults to '${CROSS_COMPILE}'.
   -h, --help                 show this message and exit.
-      --platform=VAL         platform hosting a processor of the given architecture. VAL=[${PLATFORMS[*]}]. VAL defaults to ${PLATFORM}.
+      --platform=VAL         platform hosting a processor of the given
+                             architecture. VAL=[${PLATFORMS[*]}].
+                             VAL defaults to ${PLATFORM}.
 EOUSAGE
 }
 
