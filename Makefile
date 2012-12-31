@@ -33,10 +33,12 @@ MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
 
 # Flags
-CPPFLAGS                :=
+CPPFLAGS                := -m32 \
+			   $(if $(filter $(BUILD_TYPE), release), -O2 -g0) \
+			   $(if $(filter $(BUILD_TYPE), debug), -O0 -g3)
 CFLAGS			:=
 CXXFLAGS 		:= -nostdinc -nostdlib -ffreestanding -fno-builtin \
--fno-exceptions -fno-rtti -std=c++0x 
+			   -fno-exceptions -fno-rtti -std=c++0x
 ASFLAGS                 :=
 LDFLAGS			:=
 TARGET_ARCH             :=
@@ -54,4 +56,3 @@ include mk/macros.mk
 
 # Include the top-level rules.mk
 include rules.mk
-

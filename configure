@@ -1,26 +1,154 @@
 #!/bin/sh
 
-if [ $# -eq 0 ]; then
-    ARCH="ia-32"
-    PLATFORM="ibm-pc"
-    CROSS_COMPILE=""
-elif [ $# -ge 3 ]; then
-    ARCH=$1
-    PLATFORM=$2
-    CROSS_COMPILE=$3
-else
-    echo "Usage: ./configure {ia-32,arm} {ibm-pc,omap,realview-pbx-a9} toolchain_prefix"
-fi
+# Default values
+ARCH='ia-32'
+PLATFORM='ibm-pc'
+BUILD_TYPE='release'
+CROSS_COMPILE=''
 
-cat <<EOF > build.conf 
+
+# Arrays of options' values
+ARCHS[0]='ia-32'
+ARCHS[1]='arm'
+ARCHS[2]='ppc'
+
+PLATFORMS[0]='ibm-pc'
+PLATFORMS[1]='omap'
+PLATFORMS[2]='realview-pbx-a9'
+PLATFORMS[3]='mpc5510'
+
+BUILD_TYPES[0]='release'
+BUILD_TYPES[1]='debug'
+
+# Usage printer
+function usage()
+{
+    cat << EOUSAGE >& 2
+Usage: configure [OPTIONS]
+
+      --arch=VAL             VAL=[${ARCHS[*]}]. VAL defaults to ${ARCH}. Compatibility between arch and platform is not checked.
+      --build-type=VAL       VAL=[${BUILD_TYPES[*]}]. VAL defaults to ${BUILD_TYPE}.
+                              release : optimized code (-O2) whithout debug code (-DNDEBUG) and information (-g0).
+                              debug : non-optimized code (-O0) with debug code (NDEBUG undefined) and information (-g3).
+      --cross-compile=VAL    cross-compilation tools prefix. E.g. 'powerpc-eabi-'. VAL defaults to '${CROSS_COMPILE}'.
+  -h, --help                 show this message and exit.
+      --platform=VAL         platform hosting a processor of the given architecture. VAL=[${PLATFORMS[*]}]. VAL defaults to ${PLATFORM}. Compatibility between arch and platform is not checked.
+EOUSAGE
+}
+
+GETOPT=`getopt -o 'h'                                                   \
+               -l help,arch:,platform:,cross-compile:,build-type:       \
+               -n $(basename $0) -- "$@"`
+
+# Generate the 'case' corresponding to the option.
+#  $1 : global variable to set.
+#  $2 : option being checked and set.
+#  $3 : user input value.
+# Check for errors or listing requests and set the global variable when
+# no errors were found.
+# To be used with option expecting multiple values only.
+function check_and_set()
+{
+    OPTION=$2
+    # values array name
+    VALUES="${1}S[*]"
+    VALUE=$3
+    VARIABLE=$1
+
+    # expand array name : val1 val2 val3
+    CASE=${!VALUES}
+    # generate the matching case : val1|val2|val3
+    CASE=$(echo $CASE | sed 's# #|#g')
+
+    # generation of the option's values cases
+    CASE="
+    case \"\$VALUE\" in
+        ${CASE})
+            ${VARIABLE}=${VALUE};
+            ;;
+        ?)
+            echo $OPTION possible values are [${!VALUES}];
+            exit
+            ;;
+        *)
+            echo -e \"error: unexpected ${OPTION} value.\n
+                     Possible values are [${!VALUES}]\"; >& 2;
+            exit 1;
+            ;;
+    esac"
+
+    eval $CASE
+}
+
+# Check the given prefix is valid using which command
+#  $1 : global variable to set.
+#  $2 : option being checked and set.
+#  $3 : user input value.
+function check_and_set_cross_compile()
+{
+    which ${3}gcc >/dev/null 2>/dev/null;
+    [ $? -ne 0 ] &&
+      echo "error: ${3}gcc not found in \$PATH" >& 2 &&
+      exit 1
+}
+
+# Quotes around $GETOPT are essential
+eval set -- "$GETOPT"
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h | --help)
+            usage;
+            exit 0;
+            ;;
+
+        --arch)
+            check_and_set 'ARCH' "$1" "$2";
+            shift 2;
+            ;;
+
+        --platform)
+            check_and_set 'PLATFORM' "$1" "$2";
+            shift 2;
+            ;;
+
+        --cross-compile)
+            check_and_set_cross_compile 'CROSS_COMPILE' "$1" "$2";
+            shift 2;
+            ;;
+
+        --build-type)
+            check_and_set 'BUILD_TYPE' "$1" "$2";
+            shift 2;
+            ;;
+
+        --)
+            shift;
+            break
+            ;;
+    esac
+done
+
+cat <<EOF > build.conf
 # Version
 VERSION			:= 0.1
 
-# Default target architecture to i386
 ARCH	 		:= $ARCH
 PLATFORM 		:= $PLATFORM
 CROSS_COMPILE           := $CROSS_COMPILE
+BUILD_TYPE              := $BUILD_TYPE
+
+DISTCLEAN               := build.conf core/config.hh
 EOF
 
-sh scripts/config.sh $ARCH $PLATFORM > core/config.hh
+./scripts/config.sh $ARCH $PLATFORM $BUILD_TYPE > core/config.hh
 
+cat << EOF
+-= Configuration Summary =-
+Architecture:              ${ARCH}
+Platform:                  ${PLATFORM}
+Cross-Compiler Prefix:     '${CROSS_COMPILE}'
+Build Type:                ${BUILD_TYPE}
+EOF
+
+exit

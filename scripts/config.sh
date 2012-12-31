@@ -2,20 +2,28 @@
 
 ARCH=$1
 PLATFORM=$2
+BUILD_TYPE=$3
 
-ARCH_NAMESPACE=`eval echo $ARCH | sed 's/-/_/g'`
-PLATFORM_NAMESPACE=`eval echo $PLATFORM | sed 's/-/_/g'`
+if [ $BUILD_TYPE = 'debug' ]; then
+    DEBUG='# undef NDEBUG'
+else
+    DEBUG='# define NDEBUG'
+fi
 
-echo "#ifndef CONFIG_HH_"
-echo "# define CONFIG_HH_"
-echo
+ARCH_NAMESPACE=${ARCH/-/_}
+PLATFORM_NAMESPACE=${PLATFORM/-/_}
 
-echo "#define __arch__ $ARCH"
-echo "#define __platform__ $PLATFORM"
+cat <<EOF
+#ifndef CONFIG_HH_
+# define CONFIG_HH_
 
-echo "namespace arch {}"
-echo "namespace platform {}"
+${DEBUG}
 
-echo
-echo "#endif /* !CONFIG_HH_ */"
+# define __arch__ $ARCH
+# define __platform__ $PLATFORM
 
+namespace arch {}
+namespace platform {}
+
+#endif /* !CONFIG_HH_ */
+EOF

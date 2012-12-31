@@ -45,3 +45,5 @@ targets: $(BINARIES)
 clean:
 	rm -rf $(CLEAN)
 
+distclean: clean
+	rm -rf $(DISTCLEAN)
