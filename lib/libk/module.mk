@@ -3,4 +3,3 @@
 
 # Build archive
 $(eval $(call make_archive,libk.a))
-

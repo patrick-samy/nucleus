@@ -1,5 +1,5 @@
 # Initialize some variables
-D := .
+D:= $(ROOT_DIR)
 
 # Define macros
 define add_subdirectory
@@ -17,6 +17,10 @@ define add_include
 CPPFLAGS 	:= $$(CPPFLAGS) -I$$(D)/$1
 endef
 
+define add_include_abs
+CPPFLAGS 	:= $$(CPPFLAGS) -I$1
+endef
+
 define add_sources
 SOURCES_$$(D)	:= $1
 
@@ -24,6 +28,8 @@ OBJS_$$(D)	:= $$(SOURCES_$$(D):%.c=%.o)
 OBJS_$$(D)	:= $$(OBJS_$$(D):%.cc=%.o)
 OBJS_$$(D)	:= $$(OBJS_$$(D):%.S=%.o)
 OBJS_$$(D)	:= $$(OBJS_$$(D):%.o=$$(D)/%.o)
+
+OBJS_$$(D)	:= $$(subst $$(ROOT_DIR)/,,$$(OBJS_$$(D)))
 
 DEPS_$$(D) 	:= $$(OBJS_$$(D):%.o=%.d)
 
@@ -33,7 +39,8 @@ CLEAN		:= $$(CLEAN) $$(OBJS_$$(D)) $$(DEPS_$$(D))
 endef
 
 define make_archive
-$$(D)/$1: $$(OBJS_$$(D))
+$$(subst $$(ROOT_DIR)/,,$$(D))/$1: $$(OBJS_$$(D))
+	@mkdir -p `dirname $$@`
 	$$(LLINK)
 
 CLEAN		:= $$(CLEAN) $$(D)/$1
@@ -48,4 +55,3 @@ CLEAN		:= $$(CLEAN) $1
 $$(BINARY): $$(SOURCES)
 	$$(LINK)
 endef
-

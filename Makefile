@@ -19,7 +19,8 @@ LLINK			= $(AR) csr $@ $^
 LINK			= $(LD) $(LDFLAGS) -o $@ $^
 
 # Deactivate default rules and show warnings
-MAKEFLAGS               := --no-builtin-rules --no-builtin-variables --warn-undefined-variables
+MAKEFLAGS               := --no-builtin-rules --no-builtin-variables  	\
+			   --warn-undefined-variables
 
 # Directories
 LIBK_DIR		:= lib/libk
@@ -52,7 +53,7 @@ CONFIG_HEADER	        := config.hh
 DEPEND_SCRIPT	        := $(SCRIPTS_DIR)/depend.sh
 
 # Include the macros
-include mk/macros.mk
+include $(ROOT_DIR)/mk/macros.mk
 
 # Include the top-level rules.mk
-include rules.mk
+include $(ROOT_DIR)/rules.mk

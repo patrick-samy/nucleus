@@ -6,6 +6,10 @@ PLATFORM='ibm-pc'
 BUILD_TYPE='release'
 CROSS_COMPILE=''
 
+# Destination of every generated files (objects, configurations, depedencies)
+# making possible to execute this script in a directory and having several
+# build configurations with the same source code.
+ROOT_DIR=$(dirname $0)
 
 # Arrays of options' values
 ARCHS[0]='ia-32'
@@ -109,7 +113,7 @@ function check_and_set_cross_compile()
 # arch/$ARCH/$PLATFORM exist.
 function check_arch_platform_compatibility()
 {
-    [ ! -d "arch/${ARCH}/${PLATFORM}" ] &&
+    [ ! -d "${ROOT_DIR}/arch/${ARCH}/${PLATFORM}" ] &&
       die "error: ${ARCH} and ${PLATFORM} do not seem to be compatible.\n
            Directory arch/${ARCH}/${PLATFORM} does not exist.";
 }
@@ -153,6 +157,18 @@ done
 
 check_arch_platform_compatibility $ARCH $PLATFORM
 
+# When configuring in the project directory, we don't need to delete Makefile
+# and core/.
+DISTCLEAN='build.conf core/config.hh'
+if [ `pwd` = `readlink -f $ROOT_DIR` ]; then
+    # Using project directory as configuration directory
+    # Nothing todo so far
+    false;
+else
+    # The project directory is not the configuration directory
+    DISTCLEAN="$DISTCLEAN core/config.hh Makefile"
+fi
+
 cat <<EOF > build.conf
 # Version
 VERSION			:= 0.1
@@ -161,18 +177,22 @@ ARCH	 		:= $ARCH
 PLATFORM 		:= $PLATFORM
 CROSS_COMPILE           := $CROSS_COMPILE
 BUILD_TYPE              := $BUILD_TYPE
+ROOT_DIR                := $ROOT_DIR
 
-DISTCLEAN               := build.conf core/config.hh
+DISTCLEAN               := $DISTCLEAN
 EOF
 
-./scripts/config.sh $ARCH $PLATFORM $BUILD_TYPE > core/config.hh
+mkdir -p core
+${ROOT_DIR}/scripts/config.sh $ARCH $PLATFORM $BUILD_TYPE > core/config.hh
+
+cp ${ROOT_DIR}/Makefile . 2>/dev/null >/dev/null
 
 cat << EOF
 -= Configuration Summary =-
-Architecture:              ${ARCH}
-Platform:                  ${PLATFORM}
+Architecture:              $ARCH
+Platform:                  $PLATFORM
 Cross-Compiler Prefix:     '${CROSS_COMPILE}'
-Build Type:                ${BUILD_TYPE}
+Build Type:                $BUILD_TYPE
 EOF
 
 exit
