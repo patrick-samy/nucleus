@@ -13,6 +13,7 @@ The design philosophy of nucleus is:
 - make static everything known at compile-time.
 - use virtual classes only when polymorphism is needed at run-time;
   use generic programming otherwise.
+
 We strongly believe that rich software designs highly increase
 software expressiveness, flexibility and scalability. The STL is the
 best illustration of such a design.
