@@ -19,7 +19,7 @@ ARCHS[2]='ppc'
 PLATFORMS[0]='ibm-pc'
 PLATFORMS[1]='omap'
 PLATFORMS[2]='realview-pbx-a9'
-PLATFORMS[3]='mpc5510'
+PLATFORMS[3]='mpc5554'
 
 BUILD_TYPES[0]='release'
 BUILD_TYPES[1]='debug'
@@ -57,7 +57,7 @@ EOUSAGE
 
 GETOPT=`getopt -o 'h'                                                   \
                -l help,arch:,platform:,cross-compile:,build-type:       \
-               -n $(basename $0) -- "$@"`
+               -n $(basename $0) -- "$@"` || die
 
 # Generate the 'case' corresponding to the option.
 #  $1 : global variable to set.
