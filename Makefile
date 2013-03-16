@@ -16,13 +16,17 @@ OBJDUMP			:= $(CROSS_COMPILE)objdump
 CCOMP			= $(CC) -MD $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 CXXCOMP			= $(CXX) -MD $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 LLINK			= $(AR) csr $@ $^
-LINK			= $(LD) $(LDFLAGS) -o $@ $^
+LINK			= $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+
+LD_SCRIPTS		= arch/$(ARCH)/$(PLATFORM)/memory.lds \
+                          nucleus.lds
 
 # Deactivate default rules and show warnings
 MAKEFLAGS               := --no-builtin-rules --no-builtin-variables  	\
 			   --warn-undefined-variables
 
 # Directories
+LIB_DIR			:= lib
 LIBK_DIR		:= lib/libk
 LIBKXX_DIR		:= lib/libkxx
 LIBABI_DIR		:= lib/libabi
@@ -38,10 +42,11 @@ CPPFLAGS                := -m32 \
 			   $(if $(filter $(BUILD_TYPE), release), -O2 -g0) \
 			   $(if $(filter $(BUILD_TYPE), debug), -O0 -g3)
 CFLAGS			:=
-CXXFLAGS 		:= -nostdinc -nostdlib -ffreestanding -fno-builtin \
-			   -fno-exceptions -fno-rtti -std=c++0x
+CXXFLAGS 		:= -ffreestanding -std=gnu++11
 ASFLAGS                 :=
-LDFLAGS			:=
+LDFLAGS			:= -static -T $(ROOT_DIR)/arch/$(ARCH)/$(PLATFORM)/memory.ld \
+                           -T $(ROOT_DIR)/nucleus.ld -Wl,-Map=nucleus.map
+CLEAN			+= nucleus.map
 TARGET_ARCH             :=
 TARGET_MACH             :=
 

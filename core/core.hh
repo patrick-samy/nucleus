@@ -5,7 +5,7 @@
 
 namespace core
 {
-    void main();
+  void main();
 }
 
 #endif /* !CORE_HH_ */

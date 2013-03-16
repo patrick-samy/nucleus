@@ -166,7 +166,7 @@ if [ `pwd` = `readlink -f $ROOT_DIR` ]; then
     false;
 else
     # The project directory is not the configuration directory
-    DISTCLEAN="$DISTCLEAN core/config.hh Makefile"
+    DISTCLEAN="$DISTCLEAN Makefile"
 fi
 
 cat <<EOF > build.conf

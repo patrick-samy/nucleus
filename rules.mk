@@ -2,9 +2,6 @@
 all: targets
 
 # Sub-directories
-$(eval $(call add_subdirectory,lib/libabi))
-$(eval $(call add_subdirectory,lib/libk))
-$(eval $(call add_subdirectory,lib/libkxx))
 $(eval $(call add_subdirectory,arch/$(ARCH)))
 $(eval $(call add_subdirectory,core))
 $(eval $(call add_subdirectory,drivers))
@@ -14,15 +11,12 @@ $(eval $(call add_include,.))
 
 $(eval $(call add_include_abs,.)) # needed to find core/config.hh
 
-$(eval $(call make_binary,nucleus.elf,                                        \
+$(eval $(call make_binary,nucleus.elf,                            \
                           $(ARCH_DIR)/arch-$(ARCH).a              \
                           $(PLATFORM_DIR)/platform-$(PLATFORM).a  \
                           $(CORE_DIR)/core.a                      \
                           $(MODULES)                              \
-                          $(DRIVERS_DIR)/drivers.a                \
-                          $(LIBKXX_DIR)/libkxx.a                  \
-                          $(LIBK_DIR)/libk.a                      \
-                          $(LIBABI_DIR)/libabi.a))
+                          $(DRIVERS_DIR)/drivers.a))
 
 $(CORE_DIR)/$(CONFIG_HEADER):
 	sh $(CONFIG_SCRIPT) $(ARCH) $(PLATFORM) > $@
