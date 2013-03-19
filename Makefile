@@ -18,9 +18,6 @@ CXXCOMP			= $(CXX) -MD $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 LLINK			= $(AR) csr $@ $^
 LINK			= $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
-LD_SCRIPTS		= arch/$(ARCH)/$(PLATFORM)/memory.lds \
-                          nucleus.lds
-
 # Deactivate default rules and show warnings
 MAKEFLAGS               := --no-builtin-rules --no-builtin-variables  	\
 			   --warn-undefined-variables
