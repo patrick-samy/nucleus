@@ -2,6 +2,7 @@
 
 export PREFIX=
 export TARGET=
+WITHOUT_NEWLIB=1
 
 # Print an error message on stderr and exit 1.
 #  $1 : error message
@@ -11,30 +12,32 @@ function die()
     exit 1
 }
 
+
 # Usage printer
 function usage()
 {
     cat << EOUSAGE >& 2
 Usage: `basename $0` OPTIONS
 
-      --arch=VAL             GNU tools architecture name (target's prefix).
-                              E.g. : powerpc, arm, i386... Mandatory.
-      --gcc=DIR              GCC source directory.
-      --gdb=DIR              GDB source directory.
-      --newlib=DIR           Newlib source directory.
-      --binutils=DIR         Binutils source directory.
-      --prefix=DIR           Prefix (installation) directory. Mandatory.
-  -h, --help                 show this message and exit.
+      --binutils=DIR         Binutils source directory absolute path.
+      --gcc=DIR              GCC source directory absolute path.
+      --gdb=DIR              GDB source directory absolute path.
+  -h, --help                 Show this message and exit.
+      --newlib=DIR           Newlib source directory absolute path.
+      --prefix=DIR           Prefix (installation) directory absolute path. Mandatory.
+      --target=VAL           GNU tools target name E.g. : powerpc-eabi,
+                              arm-eabi, i386-elf... Mandatory.
+      --without-newlib       Compile gcc without runtime libraries.
 EOUSAGE
 }
 
-if [ $# = 0 ]; then
+if [ $# -eq 0 ]; then
     usage;
     die;
 fi
 
-GETOPT=`getopt -o 'h'                                                   \
-               -l help,arch:,gcc:,gdb:,binutils:,newlib:,prefix:        \
+GETOPT=`getopt -o 'h'                                                           \
+               -l help,target:,gcc:,gdb:,binutils:,newlib:,prefix:,without-newlib \
                -n $(basename $0) -- "$@"` || die
 
 function mandatory()
@@ -47,7 +50,7 @@ function check_path_and_set()
     VARIABLE=$1
     VALUE=$2
 
-    [ ! -d $2 ] || die "$1 path does not exist."
+    [ ! -d $2 ] && die "$1 path does not exist."
 
     eval "${VARIABLE}=${VALUE}"
 }
@@ -62,8 +65,8 @@ while [ $# -gt 0 ]; do
             die;
             ;;
 
-        --arch)
-            ARCH=$2;
+        --target)
+            TARGET=$2;
             shift 2;
             ;;
 
@@ -88,7 +91,12 @@ while [ $# -gt 0 ]; do
             ;;
 
         --prefix)
+            check_path_and_set 'PREFIX' "$2"
+            shift 2;
+            ;;
 
+        --without-newlib)
+            WITHOUT_NEWLIB=0
             shift 2;
             ;;
 
@@ -100,77 +108,79 @@ while [ $# -gt 0 ]; do
 done
 
 mandatory $PREFIX
-mandatory $ARCH
+mandatory $TARGET
 
-export TARGET=$ARCH-eabi
+export TARGET=$TARGET
 export PREFIX=$PREFIX
 export PATH=$PATH:$PREFIX/bin
 
-BUILD_DIRNAME="build-$ARCH"
+BUILD_DIRNAME="build-$TARGET"
 COMMON_OPTIONS="--target=$TARGET --prefix=$PREFIX --disable-nls -v"
 
 function make_install
 {
     if [ ! -w $PREFIX ]; then
         echo 'Root password needed'
-        su -mc 'make install-gcc'
+        su -mc "make $1"
     else
-        make install
+        make $1
     fi
-}
 
+}
 if [ ! -z $BINUTILS ]; then
     cd $BINUTILS &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
-    make -j4 all;
-    make_install;
+    make -j4 all &&
+    make_install install;
 fi;
 
-if [ ! -z $GCC ]; then
+if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $GCC &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --disable-libssp --without-headers --with-newlib  --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
+    ../configure $COMMON_OPTIONS --disable-libssp --without-headers --with-newlib --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
     make -j4 all-gcc &&
-    su -mc 'make install-gcc'
+    make_install install-gcc
 fi;
 
-if [ ! -z $NEWLIB ]; then
+if [ ! -z $NEWLIB ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $NEWLIB &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
     make -j4 all &&
-    su -mc 'make install'
+    make_install install
 fi;
 
 if [ ! -z $GCC ]; then
-    cd $GCC/$BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --disable-libssp --with-newlib  --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
-    make -j4 all &&
-    su -mc 'make install'
-fi;
+    OPTIONS="$COMMON_OPTIONS --disable-libssp --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared";
+    if $WITHOUT_NEWLIB -eq 0; then
+        OPTIONS="$OPTIONS --without-headers"
+    else
+        OPTIONS="$OPTIONS --with-newlib"
+    fi;
 
-if [ ! -z $GCC ]; then
-    cd $GCC/$BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --disable-libssp --with-newlib  --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
+    cd $GCC &&
+    mkdir -p $BUILD_DIRNAME &&
+    cd $BUILD_DIRNAME &&
+    ../configure $OPTIONS &&
     make -j4 all &&
-    su -mc 'make install'
+    make_install install;
 fi;
-
 
 if [ ! -z $GDB ]; then
     cd $GDB &&
-    mkdir $BUILD_DIRNAME &&
+    mkdir -p $BUILD_DIRNAME &&
+    cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
     make -j4 all &&
-    su -mc 'make install'
+    make_install install
 fi;
 
-echo <<EOF
-Environment variables to save (.e.g. .${ARCH}.env):
+cat <<EOF
+Environment variables to save (.e.g. .${TARGET}.env):
 export TARGET=${TARGET}
 export PREFIX=${PREFIX}
 export PATH=\$PATH:${PREFIX}/bin
