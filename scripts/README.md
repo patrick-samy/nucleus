@@ -8,6 +8,7 @@ It is also possible to compile cross-compilation binaries without
 runtime libraries (no libc, etc.) by activating --without-newlib
 switch.
 
+```
 Usage: build-cross-tools.sh OPTIONS
 
       --binutils=DIR         Binutils source directory absolute path.
@@ -20,7 +21,7 @@ Usage: build-cross-tools.sh OPTIONS
       --target=VAL           GNU tools target name E.g. : powerpc-eabi,
                               arm-eabi, i386-elf... Mandatory.
       --without-newlib       Compile gcc without runtime libraries.
-
+```
 
 ## Notes: ##
 
@@ -31,8 +32,8 @@ Usage: build-cross-tools.sh OPTIONS
 
 ## Examples: ##
 
-1. Full cross-compilation tools with runtime support (libc, libc++,
-   libgcc, etc.) to build nucleus for powerpc target:
+- Full cross-compilation tools with runtime support (libc, libc++,
+  libgcc, etc.) to build nucleus for powerpc target:
 
 
 ```sh
@@ -43,7 +44,7 @@ Usage: build-cross-tools.sh OPTIONS
                        --newlib=/<path>/newlib-2.0.0
 ```
 
-2. Cross-gdb and cross-binutils only for arm targets:
+- Cross-gdb and cross-binutils only for arm targets:
 
 
 ```sh
@@ -52,8 +53,8 @@ Usage: build-cross-tools.sh OPTIONS
                        --gdb=/<path>/gdb-7.5.1
 ```
 
-3. Full cross-compilation for i386 targets without libraries (no libc,
-no libgcc, etc.):
+- Full cross-compilation for i386 targets without libraries (no libc,
+  no libgcc, etc.):
 
 
 ```sh
