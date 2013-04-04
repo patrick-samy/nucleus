@@ -5,8 +5,8 @@ front-ends for a given target (--target, GNU syntax (arch-abi)) and
 install it in the given prefix (--prefix).
 
 It is also possible to compile cross-compilation binaries without
-runtime libraries (no libc, etc.) by activating --without-newlib
-switch.
+target libraries (standard nor runtime libraries) by activating
+--without-newlib switch.
 
 ```
 Usage: build-cross-tools.sh OPTIONS
@@ -23,6 +23,7 @@ Usage: build-cross-tools.sh OPTIONS
       --without-newlib       Compile gcc without runtime libraries.
 ```
 
+
 ## Notes: ##
 
 - every paths must be absolute.
@@ -30,10 +31,21 @@ Usage: build-cross-tools.sh OPTIONS
   option argument) without no write access.
 
 
+## Requirements: ##
+
+The following packages must be installed to be able to compile the toolchain:
+- Texinfo
+- MPFR
+- GMP
+- MPC
+- Flex
+- Bison
+
+
 ## Examples: ##
 
-- Full cross-compilation tools with runtime support (libc, libc++,
-  libgcc, etc.) to build nucleus for powerpc target:
+- Full cross-compilation toolchain with target libraries (standard and
+  runtime) to build nucleus for powerpc target:
 
 
 ```sh
@@ -53,8 +65,7 @@ Usage: build-cross-tools.sh OPTIONS
                        --gdb=/<path>/gdb-7.5.1
 ```
 
-- Full cross-compilation for i386 targets without libraries (no libc,
-  no libgcc, etc.):
+- Full cross-compilation for i386 targets without target libraries:
 
 
 ```sh
@@ -66,7 +77,7 @@ Usage: build-cross-tools.sh OPTIONS
 ```
 
 
-## Compilation order (n depend on n-1): ##
+## Compilation order (n depends on n-1): ##
 
 - binutils
 - gcc without libraries
@@ -74,7 +85,7 @@ Usage: build-cross-tools.sh OPTIONS
 --- stopped here when using --without-newlib
 
 - newlib
-- full gcc (with libraries)
+- full gcc (with target libraries)
 
 gdb is independent from other cross-tools.
 

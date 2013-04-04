@@ -45,6 +45,11 @@ function mandatory()
     [ -z $1 ] && die "Error: missing mandatory option"
 }
 
+function exit_on_error()
+{
+    [ $? -eq 0 ] || die 'Error: consult previous logs.'
+}
+
 function check_path_and_set()
 {
     VARIABLE=$1
@@ -97,7 +102,7 @@ while [ $# -gt 0 ]; do
 
         --without-newlib)
             WITHOUT_NEWLIB=0
-            shift 2;
+            shift;
             ;;
 
         --)
@@ -133,7 +138,8 @@ if [ ! -z $BINUTILS ]; then
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
     make -j4 all &&
-    make_install install;
+    make_install install ||
+    exit_on_error;
 fi;
 
 if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
@@ -142,7 +148,8 @@ if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS --disable-libssp --without-headers --with-newlib --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
     make -j4 all-gcc &&
-    make_install install-gcc
+    make_install install-gcc ||
+    exit_on_error
 fi;
 
 if [ ! -z $NEWLIB ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
@@ -151,15 +158,16 @@ if [ ! -z $NEWLIB ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
     make -j4 all &&
-    make_install install
+    make_install install ||
+    exit_on_error;
 fi;
 
 if [ ! -z $GCC ]; then
-    OPTIONS="$COMMON_OPTIONS --disable-libssp --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared";
-    if $WITHOUT_NEWLIB -eq 0; then
+    OPTIONS="$COMMON_OPTIONS --enable-languages=c,c++";
+    if [ $WITHOUT_NEWLIB -eq 0 ]; then
         OPTIONS="$OPTIONS --without-headers"
     else
-        OPTIONS="$OPTIONS --with-newlib"
+        OPTIONS="$OPTIONS --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared --with-newlib"
     fi;
 
     cd $GCC &&
@@ -167,7 +175,8 @@ if [ ! -z $GCC ]; then
     cd $BUILD_DIRNAME &&
     ../configure $OPTIONS &&
     make -j4 all &&
-    make_install install;
+    make_install install ||
+    exit_on_error;
 fi;
 
 if [ ! -z $GDB ]; then
@@ -176,12 +185,13 @@ if [ ! -z $GDB ]; then
     cd $BUILD_DIRNAME &&
     ../configure $COMMON_OPTIONS &&
     make -j4 all &&
-    make_install install
+    make_install install ||
+    exit_on_error;
 fi;
 
 cat <<EOF
-Environment variables to save (.e.g. .${TARGET}.env):
-export TARGET=${TARGET}
-export PREFIX=${PREFIX}
+
+================================================================================
+Environment variable to set (.e.g. in your .bashrc):
 export PATH=\$PATH:${PREFIX}/bin
 EOF
