@@ -2,7 +2,7 @@
 
 export PREFIX=
 export TARGET=
-WITHOUT_NEWLIB=1
+WITHOUT_NEWLIB=1 # 0: true; false otherwise
 
 # Print an error message on stderr and exit 1.
 #  $1 : error message
@@ -142,11 +142,17 @@ if [ ! -z $BINUTILS ]; then
     exit_on_error;
 fi;
 
-if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
+if [ ! -z $GCC ]; then
+    OPTIONS="$COMMON_OPTIONS --without-headers --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared";
+
+    if [ $WITHOUT_NEWLIB -ne 0 ]; then
+        OPTIONS="$OPTIONS --with-newlib"
+    fi;
+
     cd $GCC &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --disable-libssp --without-headers --with-newlib --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --disable-shared &&
+    ../configure $OPTIONS &&
     make -j4 all-gcc &&
     make_install install-gcc ||
     exit_on_error
@@ -162,18 +168,11 @@ if [ ! -z $NEWLIB ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     exit_on_error;
 fi;
 
-if [ ! -z $GCC ]; then
-    OPTIONS="$COMMON_OPTIONS --enable-languages=c,c++";
-    if [ $WITHOUT_NEWLIB -eq 0 ]; then
-        OPTIONS="$OPTIONS --without-headers"
-    else
-        OPTIONS="$OPTIONS --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared --with-newlib"
-    fi;
-
+if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $GCC &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $OPTIONS &&
+    ../configure $COMMON_OPTIONS --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared --with-newlib &&
     make -j4 all &&
     make_install install ||
     exit_on_error;
