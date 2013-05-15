@@ -3,4 +3,5 @@
 *.a
 *.d
 *.elf
+*.map
 core/config.hh

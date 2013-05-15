@@ -1,6 +1,4 @@
 ENTRY(_start)
-STARTUP(crt0.o)
-INPUT(core/core.a)
 
 SECTIONS
 {
@@ -88,8 +86,7 @@ SECTIONS
 
   .stack :
   {
-    PROVIDE(__stack_bottom = .);
-    PROVIDE(__stack = ABSOLUTE(.));
+    PROVIDE(__stack = .);
   } > stack
 
   /* These are needed for ELF backends which have not yet been
