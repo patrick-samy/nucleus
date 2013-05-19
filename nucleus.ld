@@ -1,6 +1,8 @@
 ENTRY(_start)
+
 INPUT(core/core.a)
 STARTUP(crt1.o)
+
 SECTIONS
 {
   .rela.text : { *(.rela.text) *(.rela.gnu.linkonce.t*) }
@@ -87,8 +89,7 @@ SECTIONS
 
   .stack :
   {
-    PROVIDE(__stack_bottom = .);
-    PROVIDE(__stack = ABSOLUTE(.));
+    PROVIDE(__stack = .);
   } > stack
 
   /* These are needed for ELF backends which have not yet been

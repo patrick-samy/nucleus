@@ -6,12 +6,14 @@ $(eval $(call add_subdirectory,arch/$(ARCH)))
 $(eval $(call add_subdirectory,core))
 $(eval $(call add_subdirectory,drivers))
 $(eval $(call add_subdirectory,modules))
+$(eval $(call add_subdirectory,$(LIBC_DIR)))
 
 $(eval $(call add_include,.))
 
 $(eval $(call add_include_abs,.)) # needed to find core/config.hh
 
 $(eval $(call make_binary,nucleus.elf,                            \
+                          $(LIBC_DIR)/libc.a                      \
                           $(ARCH_DIR)/arch-$(ARCH).a              \
                           $(PLATFORM_DIR)/platform-$(PLATFORM).a  \
                           $(CORE_DIR)/core.a                      \

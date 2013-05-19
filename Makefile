@@ -24,9 +24,8 @@ MAKEFLAGS               := --no-builtin-rules --no-builtin-variables  	\
 
 # Directories
 LIB_DIR			:= lib
-LIBK_DIR		:= lib/libk
 LIBKXX_DIR		:= lib/libkxx
-LIBABI_DIR		:= lib/libabi
+LIBC_DIR		:= lib/libc
 CORE_DIR		:= core
 ARCH_DIR		:= arch/$(ARCH)
 PLATFORM_DIR	        := $(ARCH_DIR)/$(PLATFORM)
