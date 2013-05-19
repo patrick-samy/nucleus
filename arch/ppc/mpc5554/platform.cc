@@ -1,6 +1,6 @@
 #include <core/core.hh>
 
-void main()
+extern "C" void main()
 {
   core::main();
 }

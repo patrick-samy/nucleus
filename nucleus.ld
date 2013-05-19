@@ -1,7 +1,6 @@
 ENTRY(_start)
-STARTUP(crt0.o)
 INPUT(core/core.a)
-
+STARTUP(crt1.o)
 SECTIONS
 {
   .rela.text : { *(.rela.text) *(.rela.gnu.linkonce.t*) }

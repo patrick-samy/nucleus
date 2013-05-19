@@ -1,6 +1,7 @@
+#include <cstdio>
 #include <modules/console/ia-32/ibm-pc/console.hh>
 
-namespace platform 
+namespace platform
 {
     // Console
     Console::Console(unsigned int rows, unsigned int cols)
@@ -16,7 +17,7 @@ namespace platform
     {
         return streambuf_;
     }
-    
+
     void Console::set_verbose_level(e_verbose_level l)
     {
         verbose_level_ = l;
@@ -38,15 +39,15 @@ namespace platform
 
     void Console::put(char c)
     {
-        if (c == std::ostream::eol)
+        if (c == '\n')
         {
             ++row_;
             col_ = 0;
-            return; 
+            return;
         }
         else
             Vga::instance().put(row_, col_++, c);
-        
+
         if (col_ >= width_)
         {
             col_ = 0;
@@ -65,7 +66,7 @@ namespace platform
     Console::Buffer::~Buffer()
     {
     }
-    
+
     void Console::Buffer::init(Console* c, std::streamsize size)
     {
         console_ = c;
@@ -102,7 +103,7 @@ namespace platform
         // TODO: Fix this when the buffer is properly allocated
         //output_buffer_ = s;
         size_ = n;
-        
+
         this->setp(s, s + n);
 
         return this;
@@ -139,7 +140,7 @@ namespace platform
         if ((pos < 0) || (pos >= this->epptr() - this->pbase()))
             return -1;
 
-        output_current_position_ = output_begin_position_ + pos;
+        // output_current_position_ = output_begin_position_ + pos;
 
         return pos;
     }
@@ -171,4 +172,3 @@ namespace platform
         return out;
     }
 }
-
