@@ -2,7 +2,7 @@
 all: targets
 
 # Sub-directories
-$(eval $(call add_subdirectory,arch/$(ARCH)))
+$(eval $(call add_subdirectory,$(PLATFORM_DIR)))
 $(eval $(call add_subdirectory,core))
 $(eval $(call add_subdirectory,drivers))
 $(eval $(call add_subdirectory,modules))

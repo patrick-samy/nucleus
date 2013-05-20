@@ -113,7 +113,7 @@ function check_and_set_cross_compile()
 # arch/$ARCH/$PLATFORM exist.
 function check_arch_platform_compatibility()
 {
-    [ ! -d "${ROOT_DIR}/arch/${ARCH}/${PLATFORM}" ] &&
+    [ ! -d "${ROOT_DIR}/platform/${PLATFORM}" ] &&
       die "error: ${ARCH} and ${PLATFORM} do not seem to be compatible.\n
            Directory arch/${ARCH}/${PLATFORM} does not exist.";
 }

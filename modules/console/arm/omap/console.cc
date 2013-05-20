@@ -1,6 +1,6 @@
 #include "modules/console/arm/omap/console.hh"
 
-namespace platform 
+namespace platform
 {
   Console& Console::instance()
   {
@@ -17,4 +17,3 @@ namespace platform
     *buffer = (unsigned int) c;
   }
 }
-

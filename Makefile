@@ -28,7 +28,7 @@ LIBKXX_DIR		:= lib/libkxx
 LIBC_DIR		:= lib/libc
 CORE_DIR		:= core
 ARCH_DIR		:= arch/$(ARCH)
-PLATFORM_DIR	        := $(ARCH_DIR)/$(PLATFORM)
+PLATFORM_DIR	        := platform/$(PLATFORM)
 DRIVERS_DIR		:= drivers
 MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
@@ -40,7 +40,7 @@ CPPFLAGS                := -m32 \
 CFLAGS			:=
 CXXFLAGS 		:= -ffreestanding -std=gnu++11
 ASFLAGS                 :=
-LDFLAGS			:= -static -T $(ROOT_DIR)/arch/$(ARCH)/$(PLATFORM)/memory.ld \
+LDFLAGS			:= -static -T $(ROOT_DIR)/$(PLATFORM_DIR)/memory.ld \
                            -T $(ROOT_DIR)/nucleus.ld -Wl,-Map=nucleus.map
 CLEAN			+= nucleus.map
 TARGET_ARCH             :=
@@ -49,9 +49,6 @@ TARGET_MACH             :=
 # Config
 CONFIG_SCRIPT           := $(SCRIPTS_DIR)/config.sh
 CONFIG_HEADER	        := config.hh
-
-# Dependancies
-DEPEND_SCRIPT	        := $(SCRIPTS_DIR)/depend.sh
 
 # Include the macros
 include $(ROOT_DIR)/mk/macros.mk

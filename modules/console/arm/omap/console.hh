@@ -1,11 +1,11 @@
 #ifndef ARM_OMAP_CONSOLE_HH_
 # define ARM_OMAP_CONSOLE_HH_
 
-# include "modules/console/arm/console.hh"
+//# include "modules/console/arm/console.hh"
 
-namespace platform 
+namespace platform
 {
-  class Console : public arm::Console
+  class Console// : public arm::Console
   {
     public:
 	static Console& instance();

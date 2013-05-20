@@ -1,7 +1,5 @@
 ENTRY(_start)
-
-INPUT(core/core.a)
-STARTUP(crt1.o)
+STARTUP(lib/libc/src/crt1.o)
 
 SECTIONS
 {
