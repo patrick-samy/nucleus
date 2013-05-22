@@ -3,14 +3,10 @@ D:= $(ROOT_DIR)
 
 # Define macros
 define add_subdirectory
-DIR		:= $$(D)/$1
-SP		:= $$(SP).x
-
-DIRSTACK_$$(SP)	:= $$(D)
-D		:= $$(DIR)
-include		$$(DIR)/module.mk
-D		:= $$(DIRSTACK_$$(SP))
-SP		:= $$(basename $$(SP))
+OLD_$(D)        := $(D)
+D		:= $(D)/$1
+include		$$(D)/module.mk
+D		:= $$(OLD_$(D))
 endef
 
 define add_include
