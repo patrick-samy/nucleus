@@ -35,7 +35,9 @@ CLEAN		:= $$(CLEAN) $$(OBJS_$$(D)) $$(DEPS_$$(D))
 endef
 
 define make_archive
-$$(subst $$(ROOT_DIR)/,,$$(D))/$1: $$(OBJS_$$(D))
+ARCHIVE := $$(subst $$(ROOT_DIR)/,,$$(D))/$1
+TARGETS	+= $$(ARCHIVE)
+$$(ARCHIVE): $$(OBJS_$$(D))
 	@mkdir -p `dirname $$@`
 	$$(LLINK)
 
@@ -45,7 +47,7 @@ endef
 define make_binary
 BINARY		:= $1
 SOURCES		:= $2
-BINARIES 	:= $$(BINARIES) $1
+TARGETS 	+= $1
 CLEAN		:= $$(CLEAN) $1
 
 $$(BINARY): $$(SOURCES)

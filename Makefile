@@ -34,13 +34,13 @@ MODULES_DIR		:= modules
 SCRIPTS_DIR		:= scripts
 
 # Flags
-CPPFLAGS                := -m32 \
-			   $(if $(filter $(BUILD_TYPE), release), -O2 -g0) \
+CPPFLAGS                := $(if $(filter $(BUILD_TYPE), release), -O2 -g0) \
 			   $(if $(filter $(BUILD_TYPE), debug), -O0 -g3)
 CFLAGS			:=
 CXXFLAGS 		:= -ffreestanding -std=gnu++11
 ASFLAGS                 :=
-LDFLAGS			:= -static -T $(ROOT_DIR)/$(PLATFORM_DIR)/memory.ld \
+LDFLAGS			:= -B$(LIBC_DIR)/src -static                      \
+                           -T $(ROOT_DIR)/$(PLATFORM_DIR)/memory.ld       \
                            -T $(ROOT_DIR)/nucleus.ld -Wl,-Map=nucleus.map
 CLEAN			+= nucleus.map
 TARGET_ARCH             :=

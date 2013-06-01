@@ -14,7 +14,6 @@ $(eval $(call add_include,.))
 $(eval $(call add_include_abs,.)) # needed to find core/config.hh
 
 $(eval $(call make_binary,nucleus.elf,                            \
-                          $(LIBC_DIR)/libc.a                      \
                           $(ARCH_DIR)/arch-$(ARCH).a              \
                           $(PLATFORM_DIR)/platform-$(PLATFORM).a  \
                           $(CORE_DIR)/core.a                      \
@@ -42,7 +41,7 @@ VPATH := $(ROOT_DIR)
 .SUFFIXES:
 
 .PHONY: targets
-targets: $(BINARIES)
+targets: $(TARGETS)
 
 .PHONY: clean
 clean:

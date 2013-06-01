@@ -1,12 +1,15 @@
 /** Multi-Architecture C runtime initilization & entry point of the kernel
  */
+
 void __start(void)
 {
   extern void* __stack;
 
-  __init();
+  __eabi();
+  //_init();
+  //__do_global_ctors();
   main();
-  __fini();
+//  __do_global_dtors();
 
   /* Exit point */
   /* FIXME: call platform shutdown */
