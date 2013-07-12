@@ -43,23 +43,25 @@ SECTIONS
   {
     *(.data)
     *(.gnu.linkonce.d*)
-    CONSTRUCTORS
   } > data
   .data1 : { *(.data1) } > data
 
-  .ctors :
+  __init_array_start = .;
+  .init_array :
   {
-    PROVIDE (__CTOR_LIST__ = .);
     *(.ctors)
-    PROVIDE (__CTOR_END__ = .);
+    *(.init_array)
   } > data
+  __init_array_end = .;
 
-  .dtors :
+  __fini_array_start = .;
+  .fini_array :
   {
-    PROVIDE (__DTOR_LIST__ = .);
     *(.dtors)
-    PROVIDE (__DTOR_END__ = .);
+    *(.fini_array)
   } > data
+  __fini_array_end = .;
+
 
   .sdata :
   {
@@ -76,15 +78,22 @@ SECTIONS
     PROVIDE (__sbss_end = .);
   } > data
 
+  __bss_start = .;
   .bss :
   {
-     PROVIDE (__bss_start = .);
     *(.dynbss)
     *(.bss)
     *(COMMON)
-    _end = . ;
-    PROVIDE (end = .);
   } > data
+  __bss_end = .;
+
+  __exidx_start = .;
+  .ARM.exidx :
+  {
+    *(.ARM.exidx*)
+    *(.gnu.linkonce.armexidx.*)
+  } > data
+  __exidx_end = .;
 
   .stack :
   {

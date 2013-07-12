@@ -143,7 +143,7 @@ if [ ! -z $BINUTILS ]; then
 fi;
 
 if [ ! -z $GCC ]; then
-    OPTIONS="$COMMON_OPTIONS --without-headers --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared";
+    OPTIONS="$COMMON_OPTIONS --without-headers --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared --enable-initfini-array";
 
     if [ $WITHOUT_NEWLIB -ne 0 ]; then
         OPTIONS="$OPTIONS --with-newlib"
@@ -162,7 +162,7 @@ if [ ! -z $NEWLIB ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $NEWLIB &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS &&
+    ../configure $COMMON_OPTIONS --disable-newlib-supplied-syscalls &&
     make -j4 all &&
     make_install install ||
     exit_on_error;
@@ -172,7 +172,7 @@ if [ ! -z $GCC ] && [ $WITHOUT_NEWLIB -eq 1 ]; then
     cd $GCC &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared --with-newlib &&
+    ../configure $COMMON_OPTIONS --enable-languages=c,c++ --disable-libssp --with-gnu-as --with-gnu-ld --disable-shared  --enable-initfini-array --with-newlib &&
     make -j4 all &&
     make_install install ||
     exit_on_error;
@@ -182,7 +182,7 @@ if [ ! -z $GDB ]; then
     cd $GDB &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS &&
+    ../configure $COMMON_OPTIONS --with-expat &&
     make -j4 all &&
     make_install install ||
     exit_on_error;

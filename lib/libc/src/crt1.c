@@ -1,19 +1,22 @@
 /** Multi-Architecture C runtime initilization & entry point of the kernel
  */
 
+#include <string.h>
+
+/** Linker-script defined addresses */
+extern void* __stack;
+extern void* __bss_start;
+extern void* __bss_end;
+
 void __start(void)
 {
-  extern void* __stack;
+  memset(&__bss_start, 0, &__bss_end - &__bss_start);
 
-  __eabi();
-  //_init();
-  //__do_global_ctors();
+  __libc_init_array();
   main();
-//  __do_global_dtors();
+  __libc_fini_array();
 
-  /* Exit point */
   /* FIXME: call platform shutdown */
-
 
   /*
    * Actual entry point of the function to avoid the
@@ -46,4 +49,18 @@ void __start(void)
    */
   for (;;)
     ;
+}
+
+
+/*
+ * Dummy _init and _fini function no longer defined. Why does newlib call them?
+ */
+
+__attribute__ ((weak)) void _init(void)
+{
+}
+
+
+__attribute__ ((weak)) void _fini(void)
+{
 }
