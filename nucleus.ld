@@ -97,8 +97,15 @@ SECTIONS
 
   .stack :
   {
-    PROVIDE(__stack = .);
   } > stack
+  /* the stack grows down ... */
+  __stack = .;
+
+  /* ... and the heap grows up */
+  .heap :
+  {
+    end = .;
+  } > heap
 
   /* These are needed for ELF backends which have not yet been
      converted to the new style linker.  */

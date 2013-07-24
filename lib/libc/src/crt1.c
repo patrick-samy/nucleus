@@ -1,5 +1,4 @@
-/** Multi-Architecture C runtime initilization & entry point of the kernel
- */
+/** Multi-Architecture C runtime initilization & entry point of the kernel */
 
 #include <string.h>
 
@@ -53,14 +52,37 @@ void __start(void)
 
 
 /*
- * Dummy _init and _fini function no longer defined. Why does newlib call them?
+ * Nucleus is a multi-architecture kernel requiring some work-arounds
+ * to compile whatever ABI is used.
  */
 
-__attribute__ ((weak)) void _init(void)
+/** Weak __init function only defined in (some) EABI targets */
+__attribute__ ((weak)) void __init(void)
 {
 }
 
+/** Weak _init function only defined in ELF targets.
+ * _init is called by __libc_init_array whatever ABI is used. But when
+ * compiling EABI targets, this function is not defined, thus _init is
+ * weak and an alias of __init (since __init is defined by (some) EABI
+ * targets !).
+ * NB: _init cannot simply call __init since it would need it in the
+ * same translation unit while it is defined in crtn.o.
+ */
+__attribute__ ((weak, alias ("__init"))) void _init(void);
 
-__attribute__ ((weak)) void _fini(void)
+/** Weak __fini function only defined in (some) EABI targets
+ */
+__attribute__ ((weak)) void __fini(void)
 {
 }
+
+/** Weak _fini function only defined in ELF targets.
+ * _fini is called by __libc_fini_array whatever ABI is used. But when
+ * compiling EABI targets, this function is not defined, thus _fini is
+ * weak and an alias of __fini (since __fini is defined by (some) EABI
+ * targets !).
+ * NB: _fini cannot simply call __fini since it would need it in the
+ * same translation unit while it is defined in crtn.o.
+ */
+__attribute__ ((weak, alias ("__fini"))) void _fini(void);

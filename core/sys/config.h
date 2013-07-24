@@ -2,7 +2,7 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 /* Missing syscall names */
-#define MISSING_SYSCALL_NAMES 1
+/* #define MISSING_SYSCALL_NAMES 1 */
 
 /* Using ELF format */
 /* #undef HAVE_ELF */
