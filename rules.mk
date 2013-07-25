@@ -25,15 +25,15 @@ $(CORE_DIR)/$(CONFIG_HEADER):
 
 # Generic rules
 VPATH := $(ROOT_DIR)
-%.o: %.c
+%.o: %.c $(DEPENDENCIES)
 	@mkdir -p `dirname $@`
 	$(CCOMP)
 
-%.o: %.cc
+%.o: %.cc $(DEPENDENCIES)
 	@mkdir -p `dirname $@`
 	$(CXXCOMP)
 
-%.o: %.S
+%.o: %.S $(DEPENDENCIES)
 	@mkdir -p `dirname $@`
 	$(CCOMP)
 

@@ -22,6 +22,12 @@ LINK			= $(CXX) $(CPPFLAGS) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 MAKEFLAGS               := --no-builtin-rules --no-builtin-variables  	\
 			   --warn-undefined-variables
 
+# Global dependencies
+# - every included file but dependencies
+# - ld scripts
+DEPENDENCIES = $(ROOT_DIR)/$(PLATFORM_DIR)/memory.ld $(ROOT_DIR)/nucleus.ld \
+               $(filter-out %.d,$(MAKEFILE_LIST))
+
 # Directories
 LIB_DIR			:= lib
 LIBKXX_DIR		:= lib/libkxx
