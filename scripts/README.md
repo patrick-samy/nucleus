@@ -40,7 +40,7 @@ The following packages must be installed to be able to compile the toolchain:
 - MPC
 - Flex
 - Bison
-
+- Libexpat
 
 ## Examples: ##
 
