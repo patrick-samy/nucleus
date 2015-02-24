@@ -182,7 +182,7 @@ if [ ! -z $GDB ]; then
     cd $GDB &&
     mkdir -p $BUILD_DIRNAME &&
     cd $BUILD_DIRNAME &&
-    ../configure $COMMON_OPTIONS --with-expat &&
+    ../configure $COMMON_OPTIONS --with-expat --disable-multi-ice --with-python &&
     make -j4 all &&
     make_install install ||
     exit_on_error;
